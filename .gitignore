@@ -61,3 +61,5 @@ node-compile-cache/
 
 # copied in by prepack for npm tarballs
 packages/*/LICENSE
+# API routes named build are source, not build output
+!apps/platform/src/app/api/**/build/

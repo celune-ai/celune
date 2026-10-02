@@ -188,6 +188,57 @@ To enable repository integration:
 
 4. The onboarding wizard will guide you through the remaining setup
 
+## 8. Upgrades, Migrations, and Rollback
+
+### Before you upgrade
+
+Run the same checks CI runs, from the repo root:
+
+```bash
+pnpm type-check
+pnpm test
+pnpm build
+```
+
+### Apply new migrations
+
+Migrations live in `packages/db/schema/migrations/` and are recorded in `public._migrations`, so each one runs once. Check what is pending, then apply:
+
+```bash
+pnpm migrate --status      # history and pending files
+pnpm migrate --dry-run     # pending files, nothing applied
+pnpm migrate               # apply pending files, with a prompt
+```
+
+`pnpm migrate` runs SQL through the `exec_sql` RPC with the service role key. To migrate over a direct Postgres connection instead, with no tolerated errors and one transaction per file, use the strict runner (it needs `psql`):
+
+```bash
+DATABASE_URL=postgresql://... node packages/db/scripts/migrate-production.mjs --plan   # pending files, nothing applied
+DATABASE_URL=postgresql://... node packages/db/scripts/migrate-production.mjs --apply
+```
+
+Celune Cloud runs this runner through an approval-gated workflow; see [Production migrations](../../PUBLISHING.md#9-production-migrations-celune-cloud).
+
+Apply migrations before you deploy code that depends on them. See [How the schema is applied](../../SETUP.md#how-the-schema-is-applied) for how a fresh database boots.
+
+### Health check
+
+`GET /api/health` returns `200` with a JSON body whose `status` is `"ok"` when the app is up. It needs no auth. Point your host's health check at this path; `/` redirects signed-out visitors, so it is not a reliable health check.
+
+### Roll back
+
+1. Find the commit that caused the problem: `git log --oneline -10`.
+2. Revert it in a new commit: `git revert <sha>`. Do not force-push to `main`.
+3. Redeploy the reverted commit.
+
+Migrations only move forward. If the change you are rolling back included a migration, write a new migration that reverses it instead of deleting rows from `public._migrations`.
+
+### Monitoring
+
+- Your host's deploy logs and the `/api/health` check show whether the app is running.
+- The Supabase dashboard shows database health, RLS policies, and function logs.
+- The in-app activity feed (`/activity`) shows agent events.
+
 ## Troubleshooting
 
 ### "Authentication required" on all API routes

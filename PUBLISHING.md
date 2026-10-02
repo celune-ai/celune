@@ -61,9 +61,27 @@ The Celune Cloud admin app lives in a separate private repository. It builds aga
 
 ## 4. Celune Cloud
 
-Celune Cloud runs the web app from this repository's `main` branch. Database migrations follow the flow in [`apps/platform/DEPLOYMENT.md`](apps/platform/DEPLOYMENT.md) section 8: apply pending migrations before deploying code that depends on them.
+Celune Cloud runs the web app from this repository's `main` branch.
 
-The hosted database recorded the original hashes of `002-security-fixes.sql`, `003-agent-configs.sql`, and `004-agent-permissions.sql`. Only comments changed in those files, so `pnpm migrate` prints hash-mismatch warnings for them and applies nothing.
+The hosted database recorded the original hashes of `002-security-fixes.sql`, `003-agent-configs.sql`, and `004-agent-permissions.sql`. Only comments changed in those files, so the migration runners print hash-mismatch warnings for them and apply nothing.
+
+### Production migrations
+
+Celune Cloud migrations run from `.github/workflows/migrate-production.yml`. For how migrations are written, ordered, and tracked, see [Upgrades, Migrations, and Rollback](apps/platform/DEPLOYMENT.md#8-upgrades-migrations-and-rollback); this section covers only the Cloud workflow. It starts only by hand (**Actions**, then **Migrate production**, then **Run workflow** on `main`), runs in the `production` environment, and waits for an approving reviewer before it can read the database secret. Pull requests and forks cannot start it.
+
+One-time setup, in **Settings**, then **Environments**, then **production**:
+
+1. Deployment branches: `main` only.
+2. Required reviewers: the account that approves production changes.
+3. Environment secret `DATABASE_URL`: the Supabase **Session pooler** connection string (Project Settings, then Database, then Connection string, then Session pooler; port 5432). GitHub runners have no IPv6, which the direct `db.<ref>.supabase.co` host needs, and the transaction pooler on port 6543 does not keep the session state DDL needs. Store it on the environment only, never as a repository secret.
+
+For each release with new files in `packages/db/schema/migrations/`:
+
+1. Merge the migration pull request.
+2. Run **Migrate production** with mode `plan`, approve it, and read the list of pending files and any hash-mismatch warnings. Nothing changes in plan mode.
+3. Run it again with mode `apply` and approve it.
+
+`packages/db/scripts/migrate-production.mjs` is stricter than `pnpm migrate`: any SQL error stops the run, each file and its `public._migrations` row commit in one transaction (a failed file is rolled back and later files are not attempted), and `ALTER TYPE ... ADD VALUE IF NOT EXISTS` statements commit first on their own because Postgres cannot use a new enum value in the transaction that added it. Enum additions must use `IF NOT EXISTS`; if a later statement in the same file fails, the new enum value stays in the database and the re-run skips it. The runner never creates helper functions and refuses to run against a database without `public._migrations`.
 
 ## 5. Project contacts and legal
 

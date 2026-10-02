@@ -1,0 +1,58 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "interruptible": true
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "env": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "SENTRY_AUTH_TOKEN",
+        "SENTRY_ORG",
+        "SENTRY_PROJECT",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "AGENTMAIL_API_KEY",
+        "ALLOWED_ORIGINS",
+        "CORS_ORIGINS",
+        "PROVIDER_KEY_ENCRYPTION_KEY",
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET",
+        "STRIPE_PRICE_CLOUD_MONTHLY",
+        "STRIPE_PRICE_CLOUD_ANNUAL",
+        "STRIPE_PRICE_PRO",
+        "STRIPE_PRICE_TEAM",
+        "STRIPE_PRICE_UNLIMITED",
+        "STRIPE_PRICE_BUILD",
+        "ANTHROPIC_API_KEY",
+        "ELEVENLABS_API_KEY",
+        "SLACK_CLIENT_ID",
+        "SLACK_CLIENT_SECRET",
+        "SLACK_SIGNING_SECRET",
+        "ANTHROPIC_ADMIN_API_KEY",
+        "INTERNAL_API_KEY",
+        "TAVILY_API_KEY",
+        "FIRECRAWL_API_KEY",
+        "CELUNE_EDITION",
+        "CELUNE_GATE_MODE",
+        "CELUNE_API_KEY_PREFIX",
+        "AGENT_MAIL_DOMAIN"
+      ]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "type-check": {
+      "dependsOn": ["^type-check"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    }
+  }
+}

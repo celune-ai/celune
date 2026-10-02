@@ -1,0 +1,11 @@
+{
+  "agents": {
+    "rick": "headways-builder"
+  },
+  "profiles": {
+    "headways-builder": {
+      "model": "claude-sonnet-4-6",
+      "budgetUsdMax": 2
+    }
+  }
+}

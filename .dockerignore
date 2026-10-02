@@ -1,0 +1,19 @@
+node_modules
+.next
+.turbo
+.git
+.claude
+.scratch
+.vercel
+memory
+docs
+*.md
+!README.md
+
+# env files carry secrets; keep them out of every build context
+.env
+.env.*
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.local.example

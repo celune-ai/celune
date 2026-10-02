@@ -1,0 +1,30 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone Celune API server for self-host: REST, MCP, health",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/server.ts",
+    "build": "tsup",
+    "start": "node dist/server.js",
+    "start:source": "node src/server.ts",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:isolation": "vitest run --config vitest.isolation.config.ts"
+  },
+  "dependencies": {
+    "@celuneai/api": "workspace:*",
+    "@celuneai/core": "workspace:*",
+    "@hono/node-server": "^1.19.15",
+    "@supabase/supabase-js": "^2.97.0",
+    "hono": "^4.12.7"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@types/node": "^20",
+    "tsup": "^8.5.1",
+    "typescript": "^5"
+  }
+}

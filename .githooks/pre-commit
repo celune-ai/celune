@@ -1,0 +1,395 @@
+#!/usr/bin/env python3
+"""
+pre-commit secret scanner — blocks commits containing API keys or tokens.
+
+Scans all staged files for patterns matching known secret formats.
+High-confidence patterns only (specific key shapes, not just long strings).
+
+Suppression:
+  - Append  # nosec  to a line to skip that line
+  - Use  git commit --no-verify  to bypass entirely (use sparingly)
+
+Install:
+  git config core.hooksPath .githooks
+"""
+
+import math
+import re
+import subprocess
+import sys
+from collections import Counter
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# Configuration
+# ---------------------------------------------------------------------------
+
+# Directories to skip entirely
+SKIP_DIRS = frozenset({
+    "node_modules", ".next", ".venv", "__pycache__",
+    "dist", "build", ".turbo", "coverage",
+})
+
+# File extensions that are never text/source
+SKIP_EXTENSIONS = frozenset({
+    ".png", ".jpg", ".jpeg", ".gif", ".ico", ".svg",
+    ".woff", ".woff2", ".ttf", ".eot", ".otf",
+    ".mp4", ".mov", ".mp3", ".wav",
+    ".pdf", ".zip", ".gz", ".tar", ".bz2",
+    ".sqlite", ".sqlite-wal", ".sqlite-shm",
+    ".lock",  # package-lock.json, yarn.lock etc — too noisy
+})
+
+# File name patterns that are explicitly safe (example/template/test files)
+SAFE_NAME_PATTERNS = [
+    re.compile(r"\.example$", re.I),
+    re.compile(r"\.example\.", re.I),
+    re.compile(r"\.template$", re.I),
+    re.compile(r"\.test\.(ts|tsx|js|jsx|py)$", re.I),
+    re.compile(r"\.spec\.(ts|tsx|js|jsx|py)$", re.I),
+    re.compile(r"\.snap$", re.I),
+]
+
+# Max bytes to scan per file (skip large files)
+MAX_FILE_BYTES = 500_000
+
+# Entropy threshold for generic high-value assignment detection
+ENTROPY_THRESHOLD = 4.5
+MIN_ENTROPY_LEN = 24
+
+# ---------------------------------------------------------------------------
+# Secret patterns
+# Each: (compiled_regex, human_description)
+# Order matters — first match wins per line
+# ---------------------------------------------------------------------------
+
+_RAW_PATTERNS = [
+    # ---- Anthropic ----
+    (r"sk-ant-api\d+-[A-Za-z0-9_\-]{80,}", "Anthropic API key"),
+
+    # ---- OpenAI ----
+    (r"sk-(?:proj-)?[A-Za-z0-9_\-]{40,}", "OpenAI API key"),
+
+    # ---- Slack ----
+    (r"xoxb-\d+-\d+-[A-Za-z0-9]{24,}", "Slack bot token (xoxb)"),
+    (r"xapp-\d+-[A-Z0-9]+-\d+-[a-f0-9]{60,}", "Slack app-level token (xapp)"),
+    (r"xoxp-[A-Za-z0-9_\-]+", "Slack user token (xoxp)"),
+    (r"xoxe\.[A-Za-z0-9_\-]{80,}", "Slack token (xoxe)"),
+
+    # ---- Supabase / JWTs ----
+    # Catches both anon keys and service role keys (both are JWTs)
+    (
+        r"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[A-Za-z0-9_=\-]+\.[A-Za-z0-9_=\-]+",
+        "JWT token (likely Supabase key)",
+    ),
+
+    # ---- Voyage AI ----
+    (r"pa-[A-Za-z0-9_\-]{30,}", "Voyage AI API key"),
+
+    # ---- AWS ----
+    (r"AKIA[0-9A-Z]{16}", "AWS access key ID"),
+    (r"(?i)aws.{0,20}(?:secret|private).{0,10}[\"'][0-9a-zA-Z/+]{40}[\"']", "AWS secret key"),
+
+    # ---- GitHub ----
+    (r"ghp_[A-Za-z0-9]{36,}", "GitHub personal access token"),
+    (r"ghs_[A-Za-z0-9]{36,}", "GitHub server-to-server token"),
+    (r"github_pat_[A-Za-z0-9_]{82,}", "GitHub fine-grained PAT"),
+
+    # ---- Google ----
+    (r"AIza[0-9A-Za-z_\-]{35}", "Google API key"),
+    (r"ya29\.[A-Za-z0-9_\-]{60,}", "Google OAuth access token"),
+
+    # ---- Private keys ----
+    (r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----", "Private key block"),
+
+    # ---- Bluesky ----
+    # App passwords: four groups of four lowercase alpha chars separated by hyphens
+    (r"\b[a-z]{4}-[a-z]{4}-[a-z]{4}-[a-z]{4}\b", "Possible Bluesky app password"),  # nosec
+
+    # ---- Generic high-value assignment ----
+    # Catches future services: ANY_SECRET_KEY = "long-random-value"
+    (
+        r"""(?ix)
+        (?:api[_\-]?key|secret[_\-]?key|access[_\-]?token|auth[_\-]?token
+          |private[_\-]?key|service[_\-]?role|password)
+        \s*[=:]\s*
+        [\"\'`]([A-Za-z0-9+/=_.\-]{30,})[\"\'`]
+        """,
+        "High-value secret assignment",
+    ),
+]
+
+PATTERNS = [(re.compile(p, re.VERBOSE if "(?ix)" in p else 0), d) for p, d in _RAW_PATTERNS]
+
+
+# ---------------------------------------------------------------------------
+# Entropy helper (for generic pattern confidence boost)
+# ---------------------------------------------------------------------------
+
+def _entropy(s: str) -> float:
+    if len(s) < MIN_ENTROPY_LEN:
+        return 0.0
+    n = len(s)
+    return -sum(c / n * math.log2(c / n) for c in Counter(s).values())
+
+
+# ---------------------------------------------------------------------------
+# File filtering
+# ---------------------------------------------------------------------------
+
+def _should_skip(rel_path: str) -> bool:
+    p = Path(rel_path)
+    # Skip if inside a skipped directory
+    if any(part in SKIP_DIRS for part in p.parts):
+        return True
+    # Skip by extension
+    if p.suffix.lower() in SKIP_EXTENSIONS:
+        return True
+    # Skip safe-named files
+    name = p.name
+    if any(pat.search(name) for pat in SAFE_NAME_PATTERNS):
+        return True
+    return False
+
+
+# ---------------------------------------------------------------------------
+# Git helpers
+# ---------------------------------------------------------------------------
+
+def _staged_files() -> list[str]:
+    result = subprocess.run(
+        ["git", "diff", "--cached", "--name-only", "--diff-filter=ACMR"],
+        capture_output=True, text=True,
+    )
+    return [f.strip() for f in result.stdout.splitlines() if f.strip()]
+
+
+def _staged_content(rel_path: str) -> str | None:
+    """Return staged content for a file, or None if unreadable/too large."""
+    result = subprocess.run(
+        ["git", "show", f":{rel_path}"],
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        return None
+    if len(result.stdout) > MAX_FILE_BYTES:
+        return None
+    try:
+        return result.stdout.decode("utf-8", errors="replace")
+    except Exception:
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Scanner
+# ---------------------------------------------------------------------------
+
+def _scan_file(content: str) -> list[tuple[int, str]]:
+    """Scan file content. Returns list of (line_number, description)."""
+    findings = []
+    for lineno, line in enumerate(content.splitlines(), start=1):
+        # Inline suppression
+        if "# nosec" in line or "# nocheck-secret" in line:
+            continue
+        for pattern, desc in PATTERNS:
+            m = pattern.search(line)
+            if m:
+                # Extra check for generic assignment: require high entropy
+                if desc == "High-value secret assignment":
+                    captured = m.group(1) if m.lastindex else m.group(0)
+                    if _entropy(captured) < ENTROPY_THRESHOLD:
+                        continue
+                findings.append((lineno, desc))
+                break  # one finding per line
+    return findings
+
+
+# ---------------------------------------------------------------------------
+# Output
+# ---------------------------------------------------------------------------
+
+RED = "\033[31m"
+YELLOW = "\033[33m"
+CYAN = "\033[36m"
+DIM = "\033[90m"
+RESET = "\033[0m"
+BOLD = "\033[1m"
+
+
+def _report(all_findings: list[tuple[str, int, str]]) -> None:
+    print(f"\n{RED}{BOLD}╔══ SECRET SCAN BLOCKED ═══════════════════════════════════════╗{RESET}")
+    print(f"{RED}║  Possible secrets detected in staged files.                   ║{RESET}")
+    print(f"{RED}║  Commit blocked. Resolve the issues below before committing.  ║{RESET}")
+    print(f"{RED}╚════════════════════════════════════════════════════════════════╝{RESET}\n")
+
+    for path, lineno, desc in all_findings:
+        print(f"  {YELLOW}{path}:{lineno}{RESET}  {BOLD}{desc}{RESET}")
+
+    print(f"\n{DIM}  To skip a single line:  append  # nosec  to that line{RESET}")
+    print(f"{DIM}  To bypass entirely:     git commit --no-verify  (use sparingly){RESET}")
+    print(f"{DIM}  If this is a false positive, add # nosec and explain why in a comment.{RESET}\n")
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Broad-scope diff warning
+# ---------------------------------------------------------------------------
+
+# Thresholds for warnings
+BROAD_SCOPE_FILE_THRESHOLD = 20
+BROAD_SCOPE_APP_THRESHOLD = 2  # touches files in N+ different apps/packages
+
+def _warn_broad_scope(staged: list[str]) -> None:
+    """Print a non-blocking warning when a commit touches many files or apps."""
+    if not staged:
+        return
+
+    file_count = len(staged)
+
+    # Count distinct top-level directories (apps/platform, packages/db, etc.)
+    top_dirs: set[str] = set()
+    for f in staged:
+        parts = Path(f).parts
+        if len(parts) >= 2 and parts[0] in ("apps", "packages"):
+            top_dirs.add(f"{parts[0]}/{parts[1]}")
+        elif len(parts) >= 1:
+            top_dirs.add(parts[0])
+
+    warnings: list[str] = []
+
+    if file_count >= BROAD_SCOPE_FILE_THRESHOLD:
+        warnings.append(
+            f"This commit touches {file_count} files (threshold: {BROAD_SCOPE_FILE_THRESHOLD}). "
+            "Consider splitting into smaller, focused commits."
+        )
+
+    if len(top_dirs) >= BROAD_SCOPE_APP_THRESHOLD:
+        dirs_str = ", ".join(sorted(top_dirs))
+        warnings.append(
+            f"This commit spans {len(top_dirs)} packages/apps: {dirs_str}. "
+            "Verify cross-cutting changes are intentional."
+        )
+
+    if warnings:
+        print(f"\n{YELLOW}{BOLD}⚠  Broad-scope commit warning:{RESET}")
+        for w in warnings:
+            print(f"  {DIM}{w}{RESET}")
+        print(f"  {DIM}This is informational — commit is not blocked.{RESET}\n")
+
+
+def _run_internal_ref_check() -> int:
+    """Run the internal-reference grep gate (scripts/check-internal-refs.sh)."""
+    repo_root = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        capture_output=True, text=True,
+    ).stdout.strip()
+    script = Path(repo_root) / "scripts" / "check-internal-refs.sh"
+    if not script.exists():
+        return 0
+    result = subprocess.run(["bash", str(script)], capture_output=False)
+    return result.returncode
+
+
+def _run_hardcoded_url_check() -> int:
+    """Run the hardcoded URL check (scripts/check-hardcoded-urls.sh)."""
+    repo_root = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        capture_output=True, text=True,
+    ).stdout.strip()
+    script = Path(repo_root) / "scripts" / "check-hardcoded-urls.sh"
+    if not script.exists():
+        return 0
+    result = subprocess.run(["bash", str(script)], capture_output=False)
+    return result.returncode
+
+
+# ---------------------------------------------------------------------------
+# Prettier auto-format
+# ---------------------------------------------------------------------------
+
+# Extensions that prettier can format
+PRETTIER_EXTENSIONS = frozenset({
+    ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
+    ".json", ".css", ".scss", ".md", ".mdx",
+    ".html", ".yml", ".yaml", ".graphql",
+})
+
+
+def _auto_format_staged(staged: list[str]) -> None:
+    """Run prettier --write on staged files and re-stage them."""
+    formattable = [
+        f for f in staged
+        if Path(f).suffix.lower() in PRETTIER_EXTENSIONS
+        and not any(part in SKIP_DIRS for part in Path(f).parts)
+    ]
+    if not formattable:
+        return
+
+    # Run prettier on all formattable files at once (fast)
+    result = subprocess.run(
+        ["npx", "prettier", "--write", "--ignore-unknown", *formattable],
+        capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        # Prettier failed — don't block the commit, just warn
+        print(f"\n{YELLOW}⚠  Prettier auto-format failed (non-blocking):{RESET}")
+        print(f"  {DIM}{result.stderr.strip()}{RESET}\n")
+        return
+
+    # Re-stage any files that prettier modified
+    subprocess.run(["git", "add", *formattable], capture_output=True)
+
+
+def main() -> int:
+    staged = _staged_files()
+    if not staged:
+        return 0
+
+    exit_code = 0
+
+    # ── Secret scanner ──────────────────────────────────────────────────────
+    all_findings: list[tuple[str, int, str]] = []
+
+    for rel_path in staged:
+        if _should_skip(rel_path):
+            continue
+        content = _staged_content(rel_path)
+        if content is None:
+            continue
+        for lineno, desc in _scan_file(content):
+            all_findings.append((rel_path, lineno, desc))
+
+    if all_findings:
+        _report(all_findings)
+        exit_code = 1
+
+    # ── Internal reference check ────────────────────────────────────────────
+    if _run_internal_ref_check() != 0:
+        exit_code = 1
+
+    # ── Hardcoded URL check ─────────────────────────────────────────────────
+    if _run_hardcoded_url_check() != 0:
+        exit_code = 1
+
+    # ── Prettier auto-format (non-blocking) ─────────────────────────────────
+    _auto_format_staged(staged)
+
+    # ── Migration reminder (non-blocking) ────────────────────────────────────
+    new_migrations = [f for f in staged if "schema/migrations/" in f and f.endswith(".sql")]
+    if new_migrations:
+        print(f"\n{CYAN}{BOLD}📋 Migration reminder:{RESET}")
+        for m in new_migrations:
+            print(f"  {DIM}{m}{RESET}")
+        print(f"  {DIM}Run `pnpm migrate` after merge to apply.{RESET}\n")
+
+    # ── Broad-scope diff warning (non-blocking) ─────────────────────────────
+    _warn_broad_scope(staged)
+
+    return exit_code
+
+
+if __name__ == "__main__":
+    sys.exit(main())

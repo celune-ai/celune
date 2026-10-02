@@ -1,0 +1,15 @@
+{
+  "skill": "brain",
+  "score": 60.8,
+  "structure_score": 65.0,
+  "clarity_score": 85.0,
+  "completeness_score": 20.0,
+  "weights": {
+    "structure": 0.4,
+    "clarity": 0.35,
+    "completeness": 0.25
+  },
+  "regression_delta": 60.8,
+  "regression_passed": true,
+  "passed": true
+}

@@ -1,0 +1,11 @@
+/*
+ * All-in-one stylesheet for @celuneai/react (dist/styles.css): Tailwind preflight, the component
+ * CSS, and the open defaults. Use it for a standalone page. Embedding hosts import
+ * `@celuneai/react/components.css` plus their own mapping, and add `defaults.css` only if the
+ * mapping leaves tokens unset. Hosts that compile Tailwind v4 themselves import
+ * `@celuneai/react/tokens.css`, their mapping, and `@source` the package src.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/preflight.css' layer(base);
+@import './styles/components.css';
+@import './styles/defaults.css';

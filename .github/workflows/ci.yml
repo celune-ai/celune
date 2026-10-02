@@ -1,0 +1,249 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Placeholder values for Next.js builds; no real credentials are needed.
+  NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+  TURBO_TELEMETRY_DISABLED: 1
+
+jobs:
+  quality:
+    name: Type-check, lint, format
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Actions are pinned to commit SHAs
+        run: node .github/scripts/check-action-pins.mjs
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Type-check
+        run: pnpm type-check
+      - name: Lint and open-core boundary check
+        run: pnpm lint
+      - name: Format check
+        run: pnpm format:check
+      - name: No high or critical production advisories
+        run: pnpm audit --prod --audit-level=high
+      - name: Public tree has no founder-specific content
+        run: bash scripts/check-public-tree.sh
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [quality, test]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build publishable packages
+        run: pnpm build:packages
+      - name: Check package contents
+        run: pnpm -r pack --dry-run
+      - name: Build the web app
+        run: pnpm build
+      - name: Build the API server
+        run: pnpm --filter api build
+
+  node20:
+    name: Packages on Node 20
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:packages && pnpm --filter api build
+      - name: Start the bundled API server
+        run: node apps/api/dist/server.js 2>&1 | grep -q 'SUPABASE_URL is required'
+      # Inside the workspace @celuneai/core resolves to TypeScript sources, so the packages
+      # are tested the way users get them: packed tarballs installed into a new project.
+      - name: Install the packed packages and import them
+        run: |
+          OUT="$RUNNER_TEMP/celune-node20"
+          mkdir -p "$OUT/tgz"
+          for p in core api react cli; do (cd "packages/$p" && pnpm pack --pack-destination "$OUT/tgz" > /dev/null); done
+          cd "$OUT"
+          echo '{ "name": "consumer", "private": true, "type": "module" }' > package.json
+          npm install --no-audit --no-fund --loglevel=error ./tgz/*.tgz @supabase/supabase-js hono react@19 react-dom@19
+          node --input-type=module -e "
+          const core = await import('@celuneai/core');
+          const supabase = await import('@celuneai/core/supabase');
+          const api = await import('@celuneai/api');
+          if (typeof core.createServices !== 'function' || typeof supabase.SupabaseStore !== 'function' || typeof api.createApi !== 'function') process.exit(1);
+          console.log('core, core/supabase, and api import on', process.version);
+          "
+          ./node_modules/.bin/celune --version
+
+  # Boots the schema the way a Docker self-host does: supabase/postgres with the
+  # docker/volumes/db init scripts, GoTrue and storage-api (the baseline needs auth.users
+  # and the storage.buckets columns their migrations add), then the compose migrate
+  # service (packages/db/scripts/boot-local.sh). The stack runs through compose because a
+  # job service container starts before checkout and cannot mount the init scripts.
+  schema:
+    name: Schema boot (fresh install)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      COMPOSE: docker compose -f docker/docker-compose.yml
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Baseline hashes match the migration files
+        run: node packages/db/scripts/check-baseline.mjs
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Write docker/.env with celune init
+        run: pnpm --filter @celuneai/cli build && node packages/cli/dist/index.js init --mode docker --non-interactive
+      - name: Start Postgres, Auth, and Storage
+        run: $COMPOSE up -d --wait db auth storage
+      - name: First boot applies the baseline, then only newer migrations
+        run: |
+          $COMPOSE run --rm migrate | tee "$RUNNER_TEMP/boot-1.log"
+          grep -q '^== empty database; applying baseline/0001_baseline.sql' "$RUNNER_TEMP/boot-1.log"
+          grep -q '^== all [0-9]* declared tables present' "$RUNNER_TEMP/boot-1.log"
+      - name: SECURITY DEFINER functions and secret columns match the reviewed allowlist
+        run: |
+          $COMPOSE run --rm migrate 'psql "$DATABASE_URL" -X -q -v ON_ERROR_STOP=1 -f /celune/db/scripts/check-definer-grants.sql'
+          $COMPOSE run --rm migrate 'psql "$DATABASE_URL" -X -q -v ON_ERROR_STOP=1 -f /celune/db/scripts/check-rls-helper-guards.sql'
+      - name: Vector search functions return ranked, workspace-scoped results
+        run: $COMPOSE run --rm migrate 'psql "$DATABASE_URL" -X -q -v ON_ERROR_STOP=1 -f /celune/db/scripts/check-vector-search.sql'
+      - name: Baseline generator keeps rows only for seed tables
+        run: |
+          $COMPOSE run --rm -T migrate 'pg_dump "$DATABASE_URL" --schema=public --no-owner' > "$RUNNER_TEMP/dump.sql"
+          BASELINE_OUT="$RUNNER_TEMP/baseline.sql" node packages/db/scripts/generate-baseline.mjs "$RUNNER_TEMP/dump.sql"
+          grep -o '^COPY public\.[a-z_]*' "$RUNNER_TEMP/baseline.sql" | sort | tee "$RUNNER_TEMP/copy-tables.txt"
+          diff <(printf 'COPY public.%s\n' cron_jobs feature_flags permissions role_permissions roles) "$RUNNER_TEMP/copy-tables.txt"
+      - name: Second boot applies nothing
+        run: |
+          $COMPOSE run --rm migrate | tee "$RUNNER_TEMP/boot-2.log"
+          grep -q '^== applied 0 migrations' "$RUNNER_TEMP/boot-2.log"
+      - name: Service logs
+        if: failure()
+        run: $COMPOSE logs --tail 200 db auth storage
+      - name: Stop the stack
+        if: always()
+        run: $COMPOSE down -v
+
+  # Two workspaces on the booted Supabase stack (Postgres, Auth, REST, Storage, Kong).
+  # The suites call the standalone v1 server, the Supabase store, PostgREST with RLS,
+  # and the platform transfer, embed token, and /api/v1 routes, and check that workspace
+  # A cannot read or change workspace B.
+  isolation:
+    name: Tenant isolation (real Supabase)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      COMPOSE: docker compose -f docker/docker-compose.yml
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Write docker/.env with celune init
+        run: pnpm --filter @celuneai/cli build && node packages/cli/dist/index.js init --mode docker --non-interactive
+      - name: Start Postgres, Auth, REST, Storage, and the gateway
+        run: $COMPOSE up -d --wait db auth rest storage kong
+      - name: Apply the schema
+        run: $COMPOSE run --rm migrate
+      - name: Run the isolation suites
+        run: |
+          val() { grep "^$1=" docker/.env | cut -d= -f2- || true; }
+          for name in SERVICE_ROLE_KEY ANON_KEY CELUNE_HOST_JWT_SECRET PROVIDER_KEY_ENCRYPTION_KEY JOB_HMAC_KEY; do
+            value=$(val "$name")
+            if [ -n "$value" ]; then echo "::add-mask::$value"; fi
+          done
+          port=$(val KONG_HTTP_PORT)
+          port=${port:-8000}
+          export SUPABASE_URL="http://localhost:$port" NEXT_PUBLIC_SUPABASE_URL="http://localhost:$port"
+          export SUPABASE_SERVICE_ROLE_KEY="$(val SERVICE_ROLE_KEY)"
+          export SUPABASE_ANON_KEY="$(val ANON_KEY)" NEXT_PUBLIC_SUPABASE_ANON_KEY="$(val ANON_KEY)"
+          export CELUNE_HOST_JWT_SECRET="$(val CELUNE_HOST_JWT_SECRET)"
+          export CELUNE_HOST_JWT_ISSUER="$(val CELUNE_HOST_JWT_ISSUER)" CELUNE_HOST_JWT_AUDIENCE="$(val CELUNE_HOST_JWT_AUDIENCE)"
+          export PROVIDER_KEY_ENCRYPTION_KEY="$(val PROVIDER_KEY_ENCRYPTION_KEY)" JOB_HMAC_KEY="$(val JOB_HMAC_KEY)"
+          export CELUNE_EDITION=community
+          # PostgREST reloads its schema cache after migrate; wait until it serves the newest table.
+          code=000
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "$SUPABASE_URL/rest/v1/harness_connections?limit=1" -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" || true)
+            if [ "$code" = "200" ]; then break; fi
+            sleep 2
+          done
+          echo "PostgREST answered $code"
+          pnpm --filter api test:isolation
+          pnpm --filter platform test:isolation
+      - name: Service logs
+        if: failure()
+        run: $COMPOSE logs --tail 200 db auth rest storage kong
+      - name: Stop the stack
+        if: always()
+        run: $COMPOSE down -v
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GITLEAKS_VERSION: 8.30.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Install gitleaks
+        run: |
+          cd "$RUNNER_TEMP"
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
+          file="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfLO "$base/$file"
+          curl -sSfL "$base/gitleaks_${GITLEAKS_VERSION}_checksums.txt" | grep " $file\$" | sha256sum -c -
+          tar -xzf "$file" gitleaks
+      - name: Scan history and working tree
+        run: |
+          "$RUNNER_TEMP/gitleaks" git . --config .gitleaks.toml --redact --no-banner
+          "$RUNNER_TEMP/gitleaks" dir . --config .gitleaks.toml --redact --no-banner

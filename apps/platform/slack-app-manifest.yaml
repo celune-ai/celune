@@ -1,0 +1,80 @@
+# Slack App Manifest for Celune AI
+# https://api.slack.com/reference/manifests
+#
+# To use: Go to https://api.slack.com/apps → Create New App → From a manifest
+# Or update existing app at: App Settings → App Manifest
+#
+# IMPORTANT: Replace placeholder URLs with actual production URLs before submission.
+
+display_information:
+  name: Celune AI
+  description: AI-powered project management with autonomous agents. Get task updates, create tasks, and manage your projects directly from Slack.
+  long_description: |
+    Celune AI brings your entire project management workflow into Slack. Your AI agent team handles tasks, writes code, runs reviews, and keeps you informed — all without leaving your workspace.
+
+    **What Celune does:**
+    • Sends real-time notifications when agents complete tasks, hit blockers, or need your input
+    • Creates tasks directly from Slack with `/celune task create`
+    • Shows your project status at a glance with `/celune status`
+    • Provides an Agent Panel in the Home Tab with live agent status, recent activity, and quick actions
+    • Supports bidirectional messaging — reply to agent notifications and they respond in-thread
+
+    **Key features:**
+    • Slash commands: `/celune status`, `/celune help`, `/celune task create`, `/celune task list`, `/celune project list`
+    • Home Tab agent panel with live agent status grid and recent task activity
+    • Interactive notifications with action buttons (View Task, View in Dashboard)
+    • Conversation context — agents remember the thread history for natural back-and-forth
+
+    **Getting started:**
+    1. Install the app to your Slack workspace
+    2. Connect your Celune workspace in Settings → Integrations → Slack
+    3. Configure notification preferences for the events you care about
+    4. Use `/celune help` to see available commands
+
+    Built for engineering teams, design teams, marketing teams, and anyone managing work with AI agents.
+  background_color: '#1a1a1a'
+
+features:
+  app_home:
+    home_tab_enabled: true
+    messages_tab_enabled: false
+    messages_tab_read_only_enabled: false
+  bot_user:
+    display_name: Celune
+    always_online: true
+  slash_commands:
+    - command: /celune
+      url: https://app.celune.ai/api/slack/celune
+      description: Manage your Celune workspace from Slack
+      usage_hint: '[status | help | task create <title> | task list | project list]'
+      should_escape: false
+
+oauth_config:
+  scopes:
+    bot:
+      - chat:write
+      - chat:write.customize
+      - commands
+      - im:history
+      - im:read
+      - im:write
+      - app_mentions:read
+      - users:read
+  redirect_urls:
+    - https://app.celune.ai/api/notifications/slack/callback
+
+settings:
+  event_subscriptions:
+    request_url: https://app.celune.ai/api/slack/events
+    bot_events:
+      - app_home_opened
+      - app_mention
+      - message.im
+      - tokens_revoked
+      - app_uninstalled
+  interactivity:
+    is_enabled: true
+    request_url: https://app.celune.ai/api/slack/interactions
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false

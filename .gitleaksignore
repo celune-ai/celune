@@ -1,0 +1,10 @@
+# Findings in past commits only; each value is benign and none is a working secret.
+# PostHog phc_ project key: a client-side ingest key that PostHog designs to ship in browser code.
+88445766713adaff322016b110f1c9c73f67cd50:apps/web/src/lib/posthog.ts:generic-api-key:3
+# Docs placeholder in a setup guide: sequential digits and an alphabet run.
+cc49c8669eb5538eaf111c9a6d00c1888b40397f:.claude/research/remote-control-quick-reference.md:generic-api-key:96
+# Test fixture signing secret in a route test, since moved to apps/platform and covered by .gitleaks.toml.
+3d262ef10ce481b221021988d336e6c89af7f225:apps/admin/src/app/api/__tests__/slack-commands-route.test.ts:generic-api-key:5
+9c2f42b869e6626266f4369b8ff0d2d8a239d0da:.claude/research/remote-control-quick-reference.md:generic-api-key:96
+.claude/research/remote-control-quick-reference.md:generic-api-key:96
+272af4c8440f69a9cad2e255773c8bbb616995fa:apps/platform/src/app/api/__tests__/invitations-accept.test.ts:generic-api-key:9

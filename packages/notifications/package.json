@@ -1,0 +1,24 @@
+{
+  "name": "@repo/notifications",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./decrypt-webhook": "./src/decrypt-webhook.ts",
+    "./senders/slack": "./src/senders/slack.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@celuneai/core": "workspace:*",
+    "@repo/agentmail": "workspace:*",
+    "@repo/db": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@types/node": "^25",
+    "typescript": "^5"
+  }
+}

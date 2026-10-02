@@ -1,0 +1,15 @@
+{
+  "skill": "git-branch",
+  "score": 69.2,
+  "structure_score": 65.0,
+  "clarity_score": 100.0,
+  "completeness_score": 33.0,
+  "weights": {
+    "structure": 0.4,
+    "clarity": 0.35,
+    "completeness": 0.25
+  },
+  "regression_delta": 69.2,
+  "regression_passed": true,
+  "passed": true
+}

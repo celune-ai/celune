@@ -1,0 +1,14 @@
+{
+  "extends": "@repo/config/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "noUncheckedIndexedAccess": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/ui/*": ["../../ui/src/components/*"],
+      "@/lib/utils": ["../../ui/src/utils.ts"],
+      "@celuneai/react/hooks": ["../src/hooks/index.ts"]
+    }
+  },
+  "include": ["new-york/**/*.tsx"]
+}

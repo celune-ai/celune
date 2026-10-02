@@ -1,0 +1,6 @@
+{
+  "name": "plain-lib",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}

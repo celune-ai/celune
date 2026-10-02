@@ -1,0 +1,7 @@
+{
+  "name": "worker",
+  "dependencies": {
+    "@dbos-inc/dbos-sdk": "^2.0.0",
+    "@prisma/client": "^6.0.0"
+  }
+}

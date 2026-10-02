@@ -1,0 +1,15 @@
+{
+  "skill": "deep-build",
+  "score": 74.7,
+  "structure_score": 88.0,
+  "clarity_score": 95.0,
+  "completeness_score": 25.0,
+  "weights": {
+    "structure": 0.4,
+    "clarity": 0.35,
+    "completeness": 0.25
+  },
+  "regression_delta": 74.7,
+  "regression_passed": true,
+  "passed": true
+}

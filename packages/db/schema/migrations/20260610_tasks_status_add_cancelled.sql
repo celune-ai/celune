@@ -1,0 +1,34 @@
+-- Add 'cancelled' to the task_status enum.
+--
+-- Why: cancellation today has to be encoded by setting status to either
+-- 'archived' (which removes the task from the active queue but conflates
+-- with completed-and-archived) or by leaving status='inbox' and prefixing
+-- the outcome field with a string marker like '[CANCELLED]'. The marker
+-- approach leaks cancelled tasks into active queries; the 'archived'
+-- approach loses the distinction between "we shipped this and archived
+-- it" vs. "we decided not to do this."
+--
+-- A first-class 'cancelled' value lets downstream views and the admin UI
+-- render cancelled tasks separately (e.g. a "Cancelled" tab on the
+-- project detail view) without conflating them with done/archived work.
+--
+-- Surfaced by the /git-quality retrospective on 2026-06-10 for the
+-- Headways Internal Slack Bot — UX Overhaul project (Supabase ID
+-- e83190cf-4ab3-405f-95e5-a1ad1915d34e), where 14 tasks were cancelled
+-- mid-project after a scope pivot and had to live as
+-- status='archived' or outcome-prefix workarounds.
+--
+-- Postgres enum semantics: ALTER TYPE ... ADD VALUE is additive and
+-- non-blocking. Cannot run inside a transaction in some Postgres
+-- versions; Supabase migrations handle this automatically.
+
+ALTER TYPE task_status ADD VALUE IF NOT EXISTS 'cancelled';
+
+-- Optional follow-up (manual review): after this lands, run a one-off
+-- update to convert existing workaround rows. Commented out here so the
+-- migration is purely DDL; uncomment + dry-run before applying.
+--
+-- UPDATE public.tasks
+--    SET status = 'cancelled'
+--  WHERE outcome LIKE '[CANCELLED%'
+--    AND status IN ('archived', 'inbox', 'done');

@@ -1,0 +1,76 @@
+/*
+ * Headways host mapping for @celuneai/react. Follows the PRD token contract table.
+ *
+ *   @import '@celuneai/react/components.css';
+ *   @import '@celuneai/react/mappings/headways.css';
+ *
+ * Skip defaults.css: every token resolves from Headways theme.css. No color literals, so
+ * `pnpm audit:tokens` passes. Dark mode follows `[data-theme="dark"]` or `.dark` on <html>
+ * through the Headways tokens themselves.
+ *
+ * Fonts: the prebuilt @celuneai/react CSS ships no @font-face rules (the build strips them).
+ * Headways keeps loading Denim from apps/web/app/app.css; --celune-font points at --font-sans.
+ * Review and High use --warning-700: --warning-default under white text is 2.9:1 in light mode.
+ * Weights follow Headways' two-weight rule: medium and strong both map to --font-weight-strong.
+ */
+:root {
+  --celune-bg: var(--background);
+  --celune-surface: var(--card);
+  --celune-surface-raised: var(--popover);
+  --celune-surface-muted: var(--muted);
+  --celune-surface-hover: var(--accent);
+  --celune-fg: var(--foreground);
+  --celune-fg-muted: var(--muted-foreground);
+  --celune-primary: var(--primary);
+  --celune-primary-fg: var(--primary-foreground);
+  --celune-on-status: var(--primary-foreground);
+  --celune-danger: var(--destructive);
+  --celune-border: var(--border);
+  --celune-border-strong: var(--border-strong);
+  --celune-ring: var(--ring);
+  --celune-radius: var(--radius);
+  --celune-shadow: var(--shadow-sm);
+  --celune-shadow-raised: var(--shadow-md);
+  --celune-space: var(--spacing-xs);
+  --celune-font: var(--font-sans);
+  --celune-font-mono: var(--font-mono);
+  --celune-duration: var(--duration-fast);
+  --celune-ease: var(--ease-default);
+
+  --celune-font-weight-light: var(--font-weight-light);
+  --celune-font-weight-regular: var(--font-weight-regular);
+  --celune-font-weight-medium: var(--font-weight-strong);
+  --celune-font-weight-strong: var(--font-weight-strong);
+  --celune-text-3xs: var(--text-3xs);
+  --celune-text-2xs: var(--text-2xs);
+  --celune-text-xs: var(--text-xs);
+  --celune-text-sm: var(--text-sm);
+  --celune-text-base: var(--text-base);
+  --celune-text-lg: var(--text-lg);
+  --celune-text-xl: var(--text-xl);
+
+  --celune-status-backlog: var(--foreground-lighter);
+  --celune-status-inbox: var(--foreground-muted);
+  --celune-status-scoping: var(--info-default);
+  --celune-status-planning: var(--info-600);
+  --celune-status-in-progress: var(--primary);
+  --celune-status-review: var(--warning-700);
+  --celune-status-done: var(--success-foreground);
+  --celune-status-archived: var(--muted-foreground);
+  --celune-priority-urgent: var(--destructive);
+  --celune-priority-high: var(--warning-700);
+  --celune-priority-normal: var(--info-default);
+  --celune-priority-low: var(--foreground-muted);
+
+  --celune-agent-1: var(--chart-1);
+  --celune-agent-2: var(--chart-2);
+  --celune-agent-3: var(--chart-3);
+  --celune-agent-4: var(--chart-4);
+  --celune-agent-5: var(--chart-5);
+  --celune-agent-6: var(--chart-1);
+  --celune-agent-7: var(--chart-2);
+  --celune-agent-8: var(--chart-3);
+  --celune-agent-9: var(--chart-4);
+  --celune-agent-10: var(--chart-5);
+  --celune-agent-11: var(--chart-1);
+}

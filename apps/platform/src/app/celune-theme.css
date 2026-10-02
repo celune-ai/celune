@@ -1,0 +1,57 @@
+/*
+ * Maps the Celune platform theme (@repo/ui/theme.css) onto the @celuneai/react token contract,
+ * so the embedded task and project modules render as they did before the contract existed.
+ * Unlayered: wins over the package's derived layer.
+ */
+@import '@celuneai/react/tokens.css';
+
+:root {
+  --celune-bg: var(--background-default);
+  --celune-surface: var(--background-surface-100);
+  --celune-surface-raised: var(--background-overlay);
+  --celune-surface-muted: var(--background-muted);
+  --celune-surface-hover: var(--background-surface-300);
+  --celune-fg: var(--foreground-default);
+  --celune-fg-muted: var(--foreground-muted);
+  --celune-primary: var(--brand-default);
+  --celune-primary-fg: var(--foreground-contrast);
+  --celune-on-status: var(--colors-gray-dark-100);
+  --celune-danger: var(--destructive-default);
+  --celune-border: var(--border-default);
+  --celune-border-strong: var(--border-strong);
+  --celune-ring: var(--ring);
+  --celune-radius: var(--radius);
+  --celune-shadow: 0 1px 3px color-mix(in srgb, var(--colors-gray-dark-100) 20%, transparent);
+  --celune-shadow-raised: 0 10px 15px
+    color-mix(in srgb, var(--colors-gray-dark-100) 30%, transparent);
+  --celune-space: 4px;
+  --celune-font: var(--font-brand-sans, var(--ui-font-sans));
+  --celune-font-mono: var(--ui-font-mono);
+  --celune-duration: 150ms;
+  --celune-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --celune-status-backlog: var(--color-zinc-500);
+  --celune-status-inbox: var(--color-zinc-400);
+  --celune-status-scoping: var(--color-blue-400);
+  --celune-status-planning: var(--color-purple-400);
+  --celune-status-in-progress: var(--brand-default);
+  --celune-status-review: var(--color-amber-400);
+  --celune-status-done: var(--color-green-500);
+  --celune-status-archived: var(--background-surface-400);
+  --celune-priority-urgent: var(--color-red-400);
+  --celune-priority-high: var(--color-red-400);
+  --celune-priority-normal: var(--color-blue-400);
+  --celune-priority-low: var(--color-emerald-400);
+
+  --celune-agent-1: #56ccf2;
+  --celune-agent-2: #3dd68c;
+  --celune-agent-3: #4dd4ac;
+  --celune-agent-4: #f2a0c4;
+  --celune-agent-5: #6ee7a0;
+  --celune-agent-6: #9b8afb;
+  --celune-agent-7: #bbe44d;
+  --celune-agent-8: #c89bfc;
+  --celune-agent-9: #76b4fc;
+  --celune-agent-10: #f08cf6;
+  --celune-agent-11: #f87171;
+}

@@ -1,0 +1,10 @@
+model Workstream {
+  id   String @id
+  runs AgentRun[]
+}
+
+model AgentRun {
+  id           String     @id
+  workstreamId String
+  workstream   Workstream @relation(fields: [workstreamId], references: [id])
+}

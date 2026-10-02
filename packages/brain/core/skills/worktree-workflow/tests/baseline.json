@@ -1,0 +1,15 @@
+{
+  "skill": "worktree-workflow",
+  "score": 63.1,
+  "structure_score": 75.0,
+  "clarity_score": 76.0,
+  "completeness_score": 26.0,
+  "weights": {
+    "structure": 0.4,
+    "clarity": 0.35,
+    "completeness": 0.25
+  },
+  "regression_delta": 63.1,
+  "regression_passed": true,
+  "passed": true
+}

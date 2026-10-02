@@ -1,0 +1,63 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# next.js
+.next/
+out/
+
+# production
+build/
+!packages/brain/core/skills/build/
+dist/
+
+# env files & secrets
+.env
+.env.local
+.env.*.local
+.mcp.json
+
+# turbo
+.turbo/
+
+# misc
+.DS_Store
+*.pem
+*.tsbuildinfo
+**/vite.config.ts.timestamp-*.mjs
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# vercel
+.vercel
+
+# personal brain (never re-add as submodule)
+my-brain/
+
+# ide
+.idea/
+.vscode/
+*.swp
+*.swo
+.cache/
+.claude/worktrees/
+
+# macOS Finder duplicates
+*\ 2.*
+*\ 3.*
+*\ 4.*
+*\ 5.*
+*\ 2
+*\ 3
+*\ 4
+*\ 5
+
+# node compile cache
+node-compile-cache/
+
+# copied in by prepack for npm tarballs
+packages/*/LICENSE

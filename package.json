@@ -1,0 +1,67 @@
+{
+  "name": "celune-platform",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev --filter=platform...",
+    "build": "turbo build --filter=platform...",
+    "lint": "turbo lint && bash scripts/check-open-core.sh",
+    "type-check": "turbo type-check",
+    "dev:platform": "turbo dev --filter=platform",
+    "dev:admin": "turbo dev --filter=admin",
+    "build:admin": "turbo build --filter=admin",
+    "type-check:admin": "turbo type-check --filter=admin...",
+    "db:seed": "node packages/db/scripts/seed.mjs",
+    "agent:sync-personality": "node packages/db/scripts/sync-agent-personality.mjs",
+    "task": "node packages/db/scripts/task-cli.mjs",
+    "migrate": "node packages/db/scripts/migrate.mjs",
+    "migrate:status": "node packages/db/scripts/migrate.mjs --status",
+    "migrate:dry-run": "node packages/db/scripts/migrate.mjs --dry-run",
+    "migrate:backfill": "node packages/db/scripts/migrate.mjs --backfill",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "turbo test",
+    "test:watch": "turbo test --filter=platform... -- --watch",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "lint:open-core": "bash scripts/check-open-core.sh",
+    "build:packages": "turbo build --filter='./packages/*'",
+    "changeset": "changeset",
+    "release": "pnpm build:packages && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "jsdom": "^29.1.1",
+    "next": "16.3.6",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "ts-morph": "^28.0.0",
+    "turbo": "^2.5.0",
+    "vite-plugin-image-optimizer": "^2.0.3",
+    "vitest": "^4.0.18"
+  },
+  "packageManager": "pnpm@10.30.2",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.31.0",
+    "zod": "^3.25.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "serialize-javascript": ">=7.0.3",
+      "express-rate-limit": ">=8.2.2",
+      "hono": ">=4.12.7",
+      "flatted": "^3.4.2",
+      "undici": "^7.29.1",
+      "axios": "^1.20.0",
+      "next": "$next",
+      "lodash": "^4.18.0",
+      "brace-expansion@1": "^1.1.20",
+      "js-yaml@4": "^4.3.2",
+      "@humanfs/node": "^0.16.8",
+      "@hono/node-server": "^1.19.15"
+    }
+  }
+}

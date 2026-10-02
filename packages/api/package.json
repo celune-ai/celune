@@ -1,0 +1,64 @@
+{
+  "name": "@celuneai/api",
+  "version": "0.1.0",
+  "description": "Celune HTTP handlers (Hono) and MCP server on top of @celuneai/core",
+  "license": "Apache-2.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celune-ai/celune.git",
+    "directory": "packages/api"
+  },
+  "homepage": "https://github.com/celune-ai/celune#readme",
+  "bugs": {
+    "url": "https://github.com/celune-ai/celune/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./testing": "./src/testing/index.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./testing": {
+        "types": "./dist/testing.d.ts",
+        "import": "./dist/testing.js"
+      }
+    },
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsup",
+    "prepack": "cp ../../LICENSE LICENSE",
+    "postpack": "rm -f LICENSE"
+  },
+  "dependencies": {
+    "@celuneai/core": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.31.0",
+    "hono": "^4.12.7",
+    "jose": "^6.1.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@repo/types": "workspace:*",
+    "tsup": "^8.5.1",
+    "typescript": "^5"
+  },
+  "typescript": {
+    "config": "./tsconfig.json"
+  }
+}

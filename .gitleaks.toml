@@ -1,0 +1,40 @@
+title = "Celune gitleaks config"
+
+# Start from the default rule set; the allowlists below cover known test fixtures only.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Stripe test-mode key fixture in plan enforcement tests"
+condition = "AND"
+paths = ['''^apps/platform/src/lib/__tests__/plan-enforcement\.test\.ts$''']
+regexTarget = "line"
+regexes = ['''stubEnv\('STRIPE_SECRET_KEY', 'sk_test_''']
+
+[[allowlists]]
+description = "JWT signing secret used only by the API test harness"
+condition = "AND"
+paths = ['''^packages/api/src/testing/index\.ts$''']
+regexTarget = "line"
+regexes = ['''TEST_JWT_SECRET = 'test''']
+
+[[allowlists]]
+description = "Slack signing secret fixture"
+condition = "AND"
+paths = ['''^apps/platform/src/app/api/__tests__/slack-commands-route\.test\.ts$''']
+regexTarget = "line"
+regexes = ['''SIGNING_SECRET = 'test''']
+
+[[allowlists]]
+description = "Truncated JWT fed to the secret-redaction guardrail under test"
+condition = "AND"
+paths = ['''^apps/platform/src/lib/guardrails/__tests__/guardrails\.test\.ts$''']
+regexTarget = "line"
+regexes = ['''scanOutput\('SUPABASE_SERVICE_ROLE_KEY=''']
+
+[[allowlists]]
+description = "Doc comment that describes heading key paths"
+condition = "AND"
+paths = ['''^packages/db/src/brain/section-parser\.ts$''']
+regexTarget = "line"
+regexes = ['''hierarchical keys: `''']

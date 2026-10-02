@@ -1,0 +1,24 @@
+diff --git a/apps/web/app/routes.ts b/apps/web/app/routes.ts
+index 3bded9c69..e0d37a26a 100644
+--- a/apps/web/app/routes.ts
++++ b/apps/web/app/routes.ts
+@@ -14,6 +14,8 @@ export default [
+   route('api/auth/*', 'routes/api.auth.$.tsx'),
+   route('api/org/switch', 'routes/api.org.switch.tsx'),
+   route('api/feedback', 'routes/api.feedback.tsx'),
++  // Celune embed: refreshes the host JWT for the tasks and projects module.
++  route('api/celune/token', 'routes/api.celune.token.tsx'),
+   // Avatar proxy (resource route, no UI shell): streams a user's uploaded
+   // avatar bytes from the private GCS bucket.
+   route('me/avatar/:userId', 'routes/me.avatar.$userId.tsx'),
+@@ -107,6 +109,10 @@ export default [
+     // (apps/api) directly because real-time push and per-run sandbox state
+     // require WebSocket subscriptions that the SSR-loader pattern cannot
+     // express. See apps/web/app/lib/{api,ws-client}.ts.
++    // Celune tasks and projects module, mounted in the app shell.
++    route('tasks', 'routes/celune.tasks.tsx'),
++    route('projects', 'routes/celune.projects.tsx'),
++    route('projects/:id', 'routes/celune.projects.$id.tsx'),
+     route('workstreams', 'routes/workstream._index.tsx'),
+     route('workstreams/new', 'routes/workstream.new.tsx'),
+     route('workstreams/:id', 'routes/workstream.$id.tsx'),

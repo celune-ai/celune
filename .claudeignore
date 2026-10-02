@@ -1,0 +1,77 @@
+# .claudeignore — Exclude non-source files from Claude agent context
+#
+# Purpose: Prevent large binaries, build artifacts, and generated files from
+# consuming token budget. Agents need source code (.ts/.tsx/.js/.jsx), config
+# files, markdown, SQL migrations, and package.json — everything else is a
+# candidate for exclusion.
+#
+# Estimated savings: ~95%+ of disk bytes are excluded (videos, models, fonts,
+# node_modules, build caches). Context stays focused on actionable source.
+
+# ── Build artifacts and caches ────────────────────────────────────────────────
+.next/
+dist/
+.turbo/
+.vercel/
+.vite/
+out/
+build/
+
+# ── Dependencies ──────────────────────────────────────────────────────────────
+node_modules/
+
+# ── Lock files (large, agents rarely need exact version trees) ────────────────
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# ── Test coverage ─────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── TypeScript build info ─────────────────────────────────────────────────────
+*.tsbuildinfo
+
+# ── Font files (binary, never useful for agent context) ───────────────────────
+*.woff
+*.woff2
+*.ttf
+*.otf
+*.eot
+# Font directories (Next.js local font pattern)
+
+# ── Binary image assets ───────────────────────────────────────────────────────
+# Public directories with large images/favicons
+# Catch-all for binary image formats anywhere in the repo
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.avif
+# 3D model formats
+*.glb
+*.gltf
+*.fbx
+*.obj
+
+# ── Sentry ────────────────────────────────────────────────────────────────────
+.sentryclirc
+
+# ── Git internals ─────────────────────────────────────────────────────────────
+.git/
+
+# ── OS junk ───────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Editor / IDE ──────────────────────────────────────────────────────────────
+.idea/
+*.swp
+*.swo

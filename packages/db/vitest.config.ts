@@ -1,0 +1,11 @@
+import { defineConfig, mergeConfig } from 'vitest/config';
+import sharedConfig from '@repo/config/vitest.shared';
+
+export default mergeConfig(
+  sharedConfig,
+  defineConfig({
+    test: {
+      environment: 'node',
+    },
+  }),
+);

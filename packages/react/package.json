@@ -1,0 +1,138 @@
+{
+  "name": "@celuneai/react",
+  "version": "0.1.0",
+  "description": "Celune project management UI for React: provider, tasks and projects modules, headless hooks",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "keywords": [
+    "celune",
+    "react",
+    "project-management",
+    "tasks",
+    "kanban",
+    "embed"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celune-ai/celune.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/celune-ai/celune#readme",
+  "bugs": {
+    "url": "https://github.com/celune-ai/celune/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "src/styles/defaults.css",
+    "src/styles/tokens.css",
+    "examples/mappings"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./tasks": "./src/tasks/index.ts",
+    "./projects": "./src/projects/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./utils": "./src/utils/index.ts",
+    "./testing": "./src/testing/index.tsx",
+    "./styles.css": "./dist/styles.css",
+    "./components.css": "./dist/components.css",
+    "./defaults.css": "./src/styles/defaults.css",
+    "./tokens.css": "./src/styles/tokens.css",
+    "./mappings/shadcn.css": "./examples/mappings/shadcn.css",
+    "./mappings/headways.css": "./examples/mappings/headways.css",
+    "./source.css": "./src/styles.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./tasks": {
+        "types": "./dist/tasks.d.ts",
+        "import": "./dist/tasks.js"
+      },
+      "./projects": {
+        "types": "./dist/projects.d.ts",
+        "import": "./dist/projects.js"
+      },
+      "./hooks": {
+        "types": "./dist/hooks.d.ts",
+        "import": "./dist/hooks.js"
+      },
+      "./utils": {
+        "types": "./dist/utils.d.ts",
+        "import": "./dist/utils.js"
+      },
+      "./testing": {
+        "types": "./dist/testing.d.ts",
+        "import": "./dist/testing.js"
+      },
+      "./styles.css": "./dist/styles.css",
+      "./components.css": "./dist/components.css",
+      "./defaults.css": "./src/styles/defaults.css",
+      "./tokens.css": "./src/styles/tokens.css",
+      "./mappings/shadcn.css": "./examples/mappings/shadcn.css",
+      "./mappings/headways.css": "./examples/mappings/headways.css"
+    },
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsup && tailwindcss -i ./src/styles/components.css -o ./dist/components.css --minify && tailwindcss -i ./src/styles.css -o ./dist/styles.css --minify && node scripts/strip-font-face.mjs dist/components.css dist/styles.css",
+    "type-check": "tsc --noEmit && tsc -p registry/tsconfig.json",
+    "lint": "eslint src",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "storybook": "storybook dev -p 6007",
+    "build-storybook": "storybook build -o storybook-static",
+    "build:registry": "node scripts/build-registry.mjs",
+    "prepack": "cp ../../LICENSE LICENSE",
+    "postpack": "rm -f LICENSE"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@radix-ui/react-accordion": "^1.2.11",
+    "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-virtual": "^3.13.21",
+    "class-variance-authority": "^0.7.1",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^0.575.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "sonner": "^2.0.8"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@repo/types": "workspace:*",
+    "@repo/ui": "workspace:*",
+    "@storybook/react-vite": "^9.1.20",
+    "@tailwindcss/cli": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "storybook": "^9.1.20",
+    "tailwindcss": "4.3.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5",
+    "vite": "^7.3.1"
+  },
+  "typescript": {
+    "config": "./tsconfig.json"
+  }
+}

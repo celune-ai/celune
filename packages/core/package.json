@@ -1,0 +1,71 @@
+{
+  "name": "@celuneai/core",
+  "version": "0.1.0",
+  "description": "Celune domain services: tasks, projects, jobs, agents, with Store and Gate interfaces",
+  "license": "Apache-2.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celune-ai/celune.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/celune-ai/celune#readme",
+  "bugs": {
+    "url": "https://github.com/celune-ai/celune/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./config": "./src/config.ts",
+    "./supabase": "./src/supabase/index.ts",
+    "./testing": "./src/testing/index.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      },
+      "./config": {
+        "types": "./dist/config.d.ts",
+        "import": "./dist/config.js"
+      },
+      "./supabase": {
+        "types": "./dist/supabase.d.ts",
+        "import": "./dist/supabase.js"
+      },
+      "./testing": {
+        "types": "./dist/testing.d.ts",
+        "import": "./dist/testing.js"
+      }
+    },
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsup",
+    "prepack": "cp ../../LICENSE LICENSE",
+    "postpack": "rm -f LICENSE"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.97.0"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@repo/db": "workspace:*",
+    "@repo/types": "workspace:*",
+    "tsup": "^8.5.1",
+    "typescript": "^5"
+  },
+  "typescript": {
+    "config": "./tsconfig.json"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@celuneai/example-vite",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Bare Vite app rendering the @celuneai/react tasks board against a mocked transport",
+  "scripts": {
+    "dev": "pnpm --filter @celuneai/react build && vite",
+    "build": "pnpm --filter @celuneai/react build && tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@celuneai/react": "workspace:*",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sonner": "^2.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^5.1.0",
+    "typescript": "^5",
+    "vite": "^7.3.1"
+  }
+}

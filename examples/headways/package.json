@@ -1,0 +1,24 @@
+{
+  "name": "@celuneai/example-headways",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Reference embed of the Celune tasks and projects module in Headways, with the harness sidecar",
+  "scripts": {
+    "sidecar": "node sidecar/server.ts",
+    "type-check": "tsc --noEmit && tsc -p ../tsconfig.strict-host.json"
+  },
+  "dependencies": {
+    "@celuneai/core": "workspace:*",
+    "@celuneai/harness-headways": "workspace:*",
+    "@hono/node-server": "^1.19.10",
+    "@supabase/supabase-js": "^2.97.0",
+    "api": "workspace:*",
+    "hono": "^4.12.7"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}

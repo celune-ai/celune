@@ -1,0 +1,6 @@
+{
+  "name": "auth",
+  "dependencies": {
+    "better-auth": "^1.0.0"
+  }
+}

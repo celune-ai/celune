@@ -1,0 +1,107 @@
+/*
+ * @celuneai/react open defaults. Optional: skip this file when a host mapping sets every token.
+ *
+ * Dark mode follows `.dark` or `[data-theme="dark"]` on <html>.
+ * CeluneProvider `appearance.theme` forces a base through `data-celune-theme` on its root.
+ * This is the only file in the package that holds color literals.
+ *
+ * Fonts: Inter and JetBrains Mono by name. The prebuilt CSS strips @font-face rules, so the host
+ * page loads the font files.
+ */
+@layer celune-derived, celune-defaults, celune-appearance;
+
+@layer celune-defaults {
+  :root,
+  :root:has(.celune-root[data-celune-theme='light']) {
+    --celune-bg: #ffffff;
+    --celune-surface: #fafafa;
+    --celune-surface-raised: #ffffff;
+    --celune-surface-muted: #f4f4f5;
+    --celune-fg: #18181b;
+    --celune-fg-muted: #71717a;
+    --celune-primary: #18181b;
+    --celune-primary-fg: #ffffff;
+    --celune-danger: #dc2626;
+    --celune-border: #e4e4e7;
+    --celune-border-strong: #d4d4d8;
+    --celune-ring: #18181b;
+    --celune-radius: 6px;
+    --celune-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+    --celune-shadow-raised: 0 4px 16px rgb(0 0 0 / 0.1);
+    --celune-space: 4px;
+    --celune-font: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --celune-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --celune-duration: 150ms;
+    --celune-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Light fills sit under white --celune-on-status text; each clears 4.5:1. */
+    --celune-status-backlog: #71717a;
+    --celune-status-inbox: #52525b;
+    --celune-status-scoping: #0369a1;
+    --celune-status-planning: #2563eb;
+    --celune-status-in-progress: #15803d;
+    --celune-status-review: #b45309;
+    --celune-status-done: #166534;
+    --celune-status-archived: #3f3f46;
+    --celune-priority-urgent: #dc2626;
+    --celune-priority-high: #b45309;
+    --celune-priority-normal: #0369a1;
+    --celune-priority-low: #71717a;
+
+    --celune-agent-1: #0369a1;
+    --celune-agent-2: #047857;
+    --celune-agent-3: #0f766e;
+    --celune-agent-4: #be185d;
+    --celune-agent-5: #15803d;
+    --celune-agent-6: #6d28d9;
+    --celune-agent-7: #4d7c0f;
+    --celune-agent-8: #7e22ce;
+    --celune-agent-9: #1d4ed8;
+    --celune-agent-10: #a21caf;
+    --celune-agent-11: #b91c1c;
+  }
+
+  :root:is(.dark, [data-theme='dark']),
+  :root:has(.celune-root[data-celune-theme='dark']) {
+    --celune-bg: #09090b;
+    --celune-surface: #18181b;
+    --celune-surface-raised: #27272a;
+    --celune-surface-muted: #1f1f23;
+    --celune-fg: #fafafa;
+    --celune-fg-muted: #a1a1aa;
+    --celune-primary: #fafafa;
+    --celune-primary-fg: #18181b;
+    --celune-danger: #ef4444;
+    --celune-border: #27272a;
+    --celune-border-strong: #3f3f46;
+    --celune-ring: #d4d4d8;
+    --celune-shadow: 0 1px 3px rgb(0 0 0 / 0.4);
+    --celune-shadow-raised: 0 4px 16px rgb(0 0 0 / 0.5);
+
+    /* Dark fills sit under #18181b --celune-on-status text; each clears 4.5:1. */
+    --celune-status-backlog: #a1a1aa;
+    --celune-status-inbox: #d4d4d8;
+    --celune-status-scoping: #38bdf8;
+    --celune-status-planning: #60a5fa;
+    --celune-status-in-progress: #4ade80;
+    --celune-status-review: #fbbf24;
+    --celune-status-done: #22c55e;
+    --celune-status-archived: #8b8b94;
+    --celune-priority-urgent: #f87171;
+    --celune-priority-high: #fbbf24;
+    --celune-priority-normal: #38bdf8;
+    --celune-priority-low: #a1a1aa;
+
+    --celune-agent-1: #56ccf2;
+    --celune-agent-2: #3dd68c;
+    --celune-agent-3: #4dd4ac;
+    --celune-agent-4: #f2a0c4;
+    --celune-agent-5: #6ee7a0;
+    --celune-agent-6: #9b8afb;
+    --celune-agent-7: #bbe44d;
+    --celune-agent-8: #c89bfc;
+    --celune-agent-9: #76b4fc;
+    --celune-agent-10: #f08cf6;
+    --celune-agent-11: #f87171;
+  }
+}

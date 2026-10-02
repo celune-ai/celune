@@ -1,0 +1,22 @@
+{
+  "name": "@repo/agentmail",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "agentmail": "^0.5.31"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@types/node": "^25",
+    "typescript": "^5"
+  },
+  "typescript": {
+    "config": "./tsconfig.json"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@acme/headways-shaped",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

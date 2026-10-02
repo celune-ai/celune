@@ -1,0 +1,216 @@
+/* Tailwind theme mapping and shared animations for @repo/ui consumers. */
+@theme inline {
+  /* Core background / foreground */
+  --color-background: var(--background-default);
+  --color-foreground: var(--foreground-default);
+
+  /* Surface scale (Supabase-style) */
+  --color-selection: var(--background-selection);
+  --color-surface-75: var(--background-surface-75);
+  --color-surface-100: var(--background-surface-100);
+  --color-surface-200: var(--background-surface-200);
+  --color-surface-300: var(--background-surface-300);
+  --color-surface-400: var(--background-surface-400);
+
+  /* Foreground scale */
+  --color-foreground-light: var(--foreground-light);
+  --color-foreground-lighter: var(--foreground-lighter);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-contrast: var(--foreground-contrast);
+
+  /* Brand (green) */
+  --color-brand: var(--brand-default);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+
+  /* Overlay (floating panels: dropdowns, selects, popovers) */
+  --color-overlay: var(--background-overlay);
+  --color-overlay-hover: var(--background-overlay-hover);
+
+  /* Borders */
+  --color-border: var(--border-default);
+  --color-border-muted: var(--border-muted);
+  --color-border-strong: var(--border-strong);
+  --color-border-stronger: var(--border-stronger);
+  --color-border-control: var(--border-control);
+  --color-border-overlay: var(--border-overlay);
+
+  /* Destructive */
+  --color-destructive: var(--destructive-default);
+  --color-destructive-200: var(--destructive-200);
+  --color-destructive-300: var(--destructive-300);
+  --color-destructive-400: var(--destructive-400);
+  --color-destructive-500: var(--destructive-500);
+  --color-destructive-600: var(--destructive-600);
+
+  /* Warning */
+  --color-warning: var(--warning-default);
+  --color-warning-200: var(--warning-200);
+  --color-warning-300: var(--warning-300);
+  --color-warning-400: var(--warning-400);
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+  --color-warning-foreground: var(--warning-foreground);
+
+  /* Success */
+  --color-success: var(--brand-default);
+  --color-success-foreground: var(--success-foreground);
+
+  /* Backward compat — shadcn/ui token names */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Typography: Inter and JetBrains Mono from @repo/ui */
+  --font-sans: var(--ui-font-sans);
+  --font-mono: var(--ui-font-mono);
+
+  /* Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  /* Accordion animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  /* Collapsible animations */
+  --animate-collapsible-down: collapsible-down 0.2s ease-out;
+  --animate-collapsible-up: collapsible-up 0.2s ease-out;
+
+  /* Task card animations */
+  --animate-task-active: task-active-pulse 2s ease-in-out infinite;
+  --animate-task-blocked: task-blocked-pulse 2s ease-in-out infinite;
+  --animate-task-complete: task-complete-fade 2s ease-out forwards;
+
+  /* Agent row active animation */
+  --animate-agent-active: agent-active-pulse 2s ease-in-out infinite;
+
+  /* AI task generation check animation */
+  --animate-task-generate-check: task-generate-check 0.4s ease-out forwards;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes collapsible-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes collapsible-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes task-active-pulse {
+  0%,
+  100% {
+    background-color: color-mix(
+      in srgb,
+      var(--task-agent-color, var(--brand-default)) 4%,
+      transparent
+    );
+  }
+  50% {
+    background-color: color-mix(
+      in srgb,
+      var(--task-agent-color, var(--brand-default)) 10%,
+      transparent
+    );
+  }
+}
+
+@keyframes task-blocked-pulse {
+  0%,
+  100% {
+    background-color: color-mix(in srgb, var(--destructive-default) 4%, transparent);
+  }
+  50% {
+    background-color: color-mix(in srgb, var(--destructive-default) 10%, transparent);
+  }
+}
+
+@keyframes task-complete-fade {
+  0% {
+    background-color: color-mix(
+      in srgb,
+      var(--task-agent-color, var(--brand-default)) 12%,
+      transparent
+    );
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes agent-active-pulse {
+  0%,
+  100% {
+    background-color: color-mix(
+      in srgb,
+      var(--agent-active-color, var(--brand-default)) 4%,
+      transparent
+    );
+  }
+  50% {
+    background-color: color-mix(
+      in srgb,
+      var(--agent-active-color, var(--brand-default)) 10%,
+      transparent
+    );
+  }
+}
+
+@keyframes task-generate-check {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "celune",
+  "homepage": "https://github.com/celune-ai/celune",
+  "items": [
+    {
+      "name": "celune-tasks-board",
+      "type": "registry:block",
+      "title": "Celune tasks board",
+      "description": "Status columns with quick add and drag between columns. Built on the host Button, Input, and Badge; data from @celuneai/react/hooks.",
+      "dependencies": ["@celuneai/react"],
+      "registryDependencies": ["button", "input", "badge"],
+      "files": [
+        {
+          "path": "registry/new-york/celune-tasks-board/celune-tasks-board.tsx",
+          "type": "registry:component",
+          "target": "components/celune/celune-tasks-board.tsx"
+        }
+      ]
+    },
+    {
+      "name": "celune-task-drawer",
+      "type": "registry:block",
+      "title": "Celune task drawer",
+      "description": "Side panel to rename a task, change status, and read its description. Built on the host Button, Input, and Badge.",
+      "dependencies": ["@celuneai/react"],
+      "registryDependencies": ["button", "input", "badge"],
+      "files": [
+        {
+          "path": "registry/new-york/celune-task-drawer/celune-task-drawer.tsx",
+          "type": "registry:component",
+          "target": "components/celune/celune-task-drawer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "celune-project-card",
+      "type": "registry:block",
+      "title": "Celune project card",
+      "description": "Project name, status, and task progress. Built on the host Card and Badge.",
+      "dependencies": ["@celuneai/react"],
+      "registryDependencies": ["card", "badge"],
+      "files": [
+        {
+          "path": "registry/new-york/celune-project-card/celune-project-card.tsx",
+          "type": "registry:component",
+          "target": "components/celune/celune-project-card.tsx"
+        }
+      ]
+    }
+  ]
+}

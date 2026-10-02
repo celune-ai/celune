@@ -1,0 +1,22 @@
+diff --git a/apps/web/app/components/sidebar.tsx b/apps/web/app/components/sidebar.tsx
+index bd3c02f10..bef2f2beb 100644
+--- a/apps/web/app/components/sidebar.tsx
++++ b/apps/web/app/components/sidebar.tsx
+@@ -25,6 +25,8 @@ import { orgPath } from '#app/lib/org-path.js';
+ import {
+   ArrowLeftIcon,
+   BellIcon,
++  CircleCheckIcon,
++  LadderIcon,
+   BookIcon,
+   BrainIcon,
+   ClockIcon,
+@@ -172,6 +174,8 @@ function buildMainSections(
+           icon: WorkstreamIcon,
+           count: unreadWorkstreams,
+         },
++        { label: 'Tasks', href: orgPath(slug, '/tasks'), icon: CircleCheckIcon },
++        { label: 'Projects', href: orgPath(slug, '/projects'), icon: LadderIcon },
+         { label: 'Routines', href: orgPath(slug, '/routines'), icon: ClockIcon },
+         { label: 'Knowledge Base', href: orgPath(slug, '/knowledge'), icon: LibraryIcon },
+         { label: 'Skills', href: orgPath(slug, '/skills'), icon: SparkIcon },

@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  release:
+    name: Version or publish
+    # Packages release only from the public repository; the private Cloud repository must not version or publish.
+    if: github.repository == 'celune-ai/celune'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      # npm trusted publishing: the job exchanges a GitHub OIDC token for a short-lived
+      # publish token, so no long-lived npm token is needed.
+      id-token: write
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      # Node 24 ships npm 11.5.1 or later, which trusted publishing requires; pnpm 10 hands
+      # the publish to the npm CLI. No dependency cache: a release build installs fresh.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: npm supports trusted publishing
+        run: |
+          npm --version
+          node -e "const [a,b,c]=process.argv[1].split('.').map(Number); process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)" "$(npm --version)"
+      # No lifecycle scripts: nothing installed may run while the job can mint a publish token.
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      # With pending changesets this opens or updates a "Version Packages" pull request.
+      # With none, it publishes every package whose version is not on npm yet.
+      - uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        with:
+          version: pnpm changeset version
+          publish: pnpm release
+          title: 'chore: version packages'
+          commit: 'chore: version packages'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Trusted publishing is the primary path. npm tries OIDC first and uses this
+          # token only when the OIDC exchange fails. Leave the NPM_TOKEN secret unset
+          # once every package has a trusted publisher (see PUBLISHING.md).
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Same as `npm publish --provenance`. Trusted publishing attaches provenance on
+          # its own; this keeps it on the token fallback too.
+          NPM_CONFIG_PROVENANCE: true

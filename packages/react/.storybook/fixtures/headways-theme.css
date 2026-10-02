@@ -1,0 +1,74 @@
+/*
+ * Simulated Headways host: the subset of packages/ui/src/theme.css that the Headways mapping reads.
+ * Primary #4AA100 light and #B4FB6D dark per the PRD visual acceptance; warm paper canvas.
+ * Denim is a licensed face and is not bundled, so the stack falls back to General Sans or Arial.
+ */
+:root {
+  --background: hsl(40deg 33% 97%);
+  --card: hsl(40deg 30% 99%);
+  --popover: hsl(0deg 0% 100%);
+  --muted: hsl(40deg 18% 93%);
+  --accent: hsl(40deg 16% 91%);
+  --foreground: hsl(30deg 8% 12%);
+  --foreground-lighter: hsl(30deg 5% 45%);
+  --foreground-muted: hsl(30deg 5% 58%);
+  --muted-foreground: hsl(30deg 5% 40%);
+  --primary: #4aa100;
+  --primary-foreground: hsl(0deg 0% 100%);
+  --destructive: hsl(4deg 72% 50%);
+  --border: hsl(38deg 16% 87%);
+  --border-strong: hsl(38deg 12% 78%);
+  --ring: #4aa100;
+  --radius: 8px;
+  --shadow-sm: 0 1px 2px hsl(30deg 20% 20% / 0.08);
+  --shadow-md: 0 6px 20px hsl(30deg 20% 20% / 0.12);
+  --spacing-xs: 4px;
+  --font-sans: 'Denim', 'General Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-strong: 600;
+  --text-3xs: 10px;
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --duration-fast: 120ms;
+  --ease-default: cubic-bezier(0.2, 0, 0, 1);
+  --info-default: hsl(210deg 80% 52%);
+  --info-600: hsl(222deg 70% 50%);
+  --warning-default: hsl(36deg 92% 48%);
+  --warning-700: hsl(30deg 80% 30%);
+  --success-foreground: hsl(95deg 100% 28%);
+  --chart-1: hsl(95deg 100% 32%);
+  --chart-2: hsl(210deg 80% 52%);
+  --chart-3: hsl(280deg 60% 58%);
+  --chart-4: hsl(36deg 92% 48%);
+  --chart-5: hsl(340deg 70% 56%);
+}
+
+.dark,
+[data-theme='dark'] {
+  --background: hsl(40deg 6% 8%);
+  --card: hsl(40deg 5% 11%);
+  --popover: hsl(40deg 5% 13%);
+  --muted: hsl(40deg 5% 15%);
+  --accent: hsl(40deg 5% 17%);
+  --foreground: hsl(40deg 20% 94%);
+  --foreground-lighter: hsl(40deg 6% 62%);
+  --foreground-muted: hsl(40deg 5% 50%);
+  --muted-foreground: hsl(40deg 6% 66%);
+  --primary: #b4fb6d;
+  --primary-foreground: hsl(95deg 60% 10%);
+  --destructive: hsl(4deg 80% 62%);
+  --border: hsl(40deg 5% 20%);
+  --border-strong: hsl(40deg 5% 28%);
+  --ring: #b4fb6d;
+  --info-default: hsl(210deg 90% 66%);
+  --info-600: hsl(222deg 80% 68%);
+  --warning-default: hsl(40deg 95% 58%);
+  --warning-700: hsl(45deg 100% 70%);
+  --success-foreground: hsl(95deg 80% 68%);
+}

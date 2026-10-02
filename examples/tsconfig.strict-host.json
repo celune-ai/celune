@@ -1,0 +1,22 @@
+{
+  "$comment": "Type-checks the published packages' sources the way a strict host compiles linked Celune source.",
+  "extends": "../packages/config/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "incremental": false,
+    "noUncheckedIndexedAccess": true,
+    "allowImportingTsExtensions": true,
+    "typeRoots": ["./headways/node_modules/@types"],
+    "types": ["node"]
+  },
+  "include": [
+    "../packages/core/src/**/*.ts",
+    "../packages/api/src/**/*.ts",
+    "../packages/types/src/**/*.ts",
+    "../packages/harness-headways/src/**/*.ts",
+    "../packages/cli/src/**/*.ts",
+    "../packages/react/src/**/*.ts",
+    "../packages/react/src/**/*.tsx"
+  ],
+  "exclude": ["../packages/react/src/stories/**"]
+}

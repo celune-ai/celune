@@ -1,0 +1,49 @@
+{
+  "name": "@repo/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "migrate": "node scripts/migrate.mjs",
+    "migrate:status": "node scripts/migrate.mjs --status",
+    "migrate:dry-run": "node scripts/migrate.mjs --dry-run",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "exports": {
+    "./client": "./src/client.ts",
+    "./server": "./src/server.ts",
+    "./middleware": "./src/middleware.ts",
+    "./queries": "./src/queries.ts",
+    "./api": "./src/api.ts",
+    "./service": "./src/service.ts",
+    "./validation": "./src/validation.ts",
+    "./brain-manifest-registry": "./src/brain-manifest-registry.ts",
+    "./brain-section-parser": "./src/brain/section-parser.ts",
+    "./brain-section-diff": "./src/brain/section-diff.ts",
+    "./agent-contract": "./src/agent-contract.ts",
+    "./skill-ownership": "./src/skill-ownership.ts",
+    "./config-drift": "./src/config-drift.ts",
+    "./team-templates": "./src/team-templates.ts",
+    "./starter-memories": "./src/starter-memories.ts",
+    "./team-memories": "./src/team-memories.ts",
+    "./feature-flags": "./src/feature-flags.ts",
+    "./skill-loader": "./src/skill-loader.ts",
+    "./byo-skill-validator": "./src/byo-skill-validator.ts",
+    "./credential-resolver": "./src/credential-resolver.ts"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.97.0",
+    "@repo/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*"
+  },
+  "peerDependencies": {
+    "next": ">=16.0.0"
+  },
+  "typescript": {
+    "config": "./tsconfig.json"
+  }
+}

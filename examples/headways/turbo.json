@@ -1,0 +1,13 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "type-check": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/examples/tsconfig.strict-host.json",
+        "$TURBO_ROOT$/packages/config/tsconfig.base.json",
+        "$TURBO_ROOT$/packages/{core,api,types,harness-headways,cli,react}/src/**"
+      ]
+    }
+  }
+}

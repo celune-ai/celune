@@ -1,0 +1,136 @@
+/*
+ * Tailwind theme for the prebuilt stylesheet. Points every theme color, font, weight, size, and
+ * radius that the package or its @repo/ui primitives use at a --celune-* token, so the compiled
+ * CSS reads only --celune-* variables. Loaded after @repo/ui/tailwind-theme.css to override it.
+ */
+@theme inline {
+  --color-black: var(--celune-primary-fg);
+  --color-background: var(--celune-bg);
+  --color-foreground: var(--celune-fg);
+  --color-selection: var(--celune-surface-hover);
+  --color-surface-75: var(--celune-bg);
+  --color-surface-100: var(--celune-surface);
+  --color-surface-200: var(--celune-surface-hover);
+  --color-surface-300: var(--celune-surface-hover);
+  --color-surface-400: var(--celune-border-strong);
+  --color-foreground-light: var(--celune-fg-muted);
+  --color-foreground-lighter: var(--celune-fg-muted);
+  --color-foreground-muted: var(--celune-fg-muted);
+  --color-foreground-contrast: var(--celune-primary-fg);
+
+  --color-brand: var(--celune-primary);
+  --color-brand-200: color-mix(in srgb, var(--celune-primary) 15%, var(--celune-bg));
+  --color-brand-300: color-mix(in srgb, var(--celune-primary) 30%, var(--celune-bg));
+  --color-brand-400: color-mix(in srgb, var(--celune-primary) 60%, var(--celune-bg));
+  --color-brand-500: var(--celune-primary);
+  --color-brand-600: var(--celune-status-done);
+
+  --color-overlay: var(--celune-surface-raised);
+  --color-overlay-hover: var(--celune-surface-hover);
+
+  --color-border: var(--celune-border);
+  --color-border-muted: var(--celune-border);
+  --color-border-strong: var(--celune-border-strong);
+  --color-border-stronger: var(--celune-border-strong);
+  --color-border-control: var(--celune-border-strong);
+  --color-border-overlay: var(--celune-border);
+
+  --color-destructive: var(--celune-danger);
+  --color-destructive-200: color-mix(in srgb, var(--celune-danger) 10%, var(--celune-bg));
+  --color-destructive-300: color-mix(in srgb, var(--celune-danger) 20%, var(--celune-bg));
+  --color-destructive-400: color-mix(in srgb, var(--celune-danger) 40%, var(--celune-bg));
+  --color-destructive-500: color-mix(in srgb, var(--celune-danger) 70%, var(--celune-bg));
+  --color-destructive-600: var(--celune-danger);
+
+  --color-warning: var(--celune-status-review);
+  --color-warning-200: color-mix(in srgb, var(--celune-status-review) 10%, var(--celune-bg));
+  --color-warning-300: color-mix(in srgb, var(--celune-status-review) 20%, var(--celune-bg));
+  --color-warning-400: color-mix(in srgb, var(--celune-status-review) 40%, var(--celune-bg));
+  --color-warning-500: color-mix(in srgb, var(--celune-status-review) 70%, var(--celune-bg));
+  --color-warning-600: var(--celune-status-review);
+  --color-warning-foreground: var(--celune-status-review);
+
+  --color-success: var(--celune-status-done);
+  --color-success-foreground: var(--celune-status-done);
+
+  --color-primary: var(--celune-primary);
+  --color-primary-foreground: var(--celune-primary-fg);
+  --color-secondary: var(--celune-surface-hover);
+  --color-secondary-foreground: var(--celune-fg);
+  --color-muted: var(--celune-surface-muted);
+  --color-muted-foreground: var(--celune-fg-muted);
+  --color-accent: var(--celune-surface-hover);
+  --color-accent-foreground: var(--celune-fg);
+  --color-popover: var(--celune-surface-raised);
+  --color-popover-foreground: var(--celune-fg);
+  --color-card: var(--celune-surface);
+  --color-card-foreground: var(--celune-fg);
+  --color-input: var(--celune-border-strong);
+  --color-ring: var(--celune-ring);
+
+  --font-sans: var(--celune-font);
+  --font-mono: var(--celune-font-mono);
+
+  --font-weight-light: var(--celune-font-weight-light);
+  --font-weight-normal: var(--celune-font-weight-regular);
+  --font-weight-medium: var(--celune-font-weight-medium);
+  --font-weight-semibold: var(--celune-font-weight-strong);
+
+  --text-xs: var(--celune-text-xs);
+  --text-sm: var(--celune-text-sm);
+  --text-base: var(--celune-text-base);
+  --text-lg: var(--celune-text-lg);
+  --text-xl: var(--celune-text-xl);
+
+  --radius-sm: calc(var(--celune-radius) - 2px);
+  --radius-md: var(--celune-radius);
+  --radius-lg: calc(var(--celune-radius) + 2px);
+  --radius-xl: calc(var(--celune-radius) + 10px);
+
+  --shadow: var(--celune-shadow);
+  --shadow-sm: var(--celune-shadow);
+  --shadow-md: var(--celune-shadow);
+  --shadow-lg: var(--celune-shadow-raised);
+  --shadow-2xl: var(--celune-shadow-raised);
+}
+
+@keyframes task-active-pulse {
+  0%,
+  100% {
+    background-color: color-mix(
+      in srgb,
+      var(--task-agent-color, var(--celune-primary)) 4%,
+      transparent
+    );
+  }
+  50% {
+    background-color: color-mix(
+      in srgb,
+      var(--task-agent-color, var(--celune-primary)) 10%,
+      transparent
+    );
+  }
+}
+
+@keyframes task-blocked-pulse {
+  0%,
+  100% {
+    background-color: color-mix(in srgb, var(--celune-danger) 4%, transparent);
+  }
+  50% {
+    background-color: color-mix(in srgb, var(--celune-danger) 10%, transparent);
+  }
+}
+
+@keyframes task-complete-fade {
+  0% {
+    background-color: color-mix(
+      in srgb,
+      var(--task-agent-color, var(--celune-primary)) 12%,
+      transparent
+    );
+  }
+  100% {
+    background-color: transparent;
+  }
+}

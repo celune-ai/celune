@@ -1,0 +1,19 @@
+model Org {
+  id String @id
+}
+
+model Workstream {
+  id   String @id
+  goal String
+}
+
+model AgentRun {
+  id           String @id
+  workstreamId String
+  status       String
+}
+
+model Routine {
+  id       String @id
+  schedule String
+}

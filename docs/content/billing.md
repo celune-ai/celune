@@ -1,0 +1,107 @@
+# Billing & Plans
+
+> Pricing and plan details described here reflect the current state and may change as the platform evolves.
+
+## Plans Overview
+
+Celune offers three plan tiers:
+
+|                       | Essential (Free)                   | Build ($19/mo)                      | Standard ($49/mo)                     |
+| --------------------- | ---------------------------------- | ----------------------------------- | ------------------------------------- |
+| **Agents**            | 2 (Lead + Reviewer)                | 5                                   | 5 (PM, Designer, Researcher unlocked) |
+| **Skills**            | 13 slash skills, 2 protocol skills | 23+ slash skills, 5 protocol skills | All skills                            |
+| **Workspaces**        | 3                                  | 10                                  | 20                                    |
+| **Tasks/month**       | 1,000                              | 10,000                              | 100,000                               |
+| **Memory entries**    | 20,000                             | 50,000                              | Unlimited                             |
+| **Storage**           | 500 MB                             | 1 GB                                | 10 GB                                 |
+| **TTS minutes/month** | 10                                 | 60                                  | 300                                   |
+| **API calls/month**   | 1,000                              | 10,000                              | 100,000                               |
+
+Enterprise plans with SSO, custom integrations, and dedicated support are available on request.
+
+## What's Included
+
+### Essential (Free)
+
+- Basic dashboard and task management
+- 2 AI agents (Lead and Reviewer)
+- 13 slash skills and 2 protocol skills
+- Integrations (GitHub, Slack)
+- BYOK support (Bring Your Own Key)
+
+### Build ($19/mo)
+
+Everything in Essential, plus:
+
+- Voice (text-to-speech)
+- Analytics dashboard
+- API access
+- Agent personalities
+- Teammates (invite collaborators)
+- Higher limits across the board
+
+### Standard ($49/mo)
+
+Everything in Build, plus:
+
+- AFK modes (agents work while you're away)
+- Webhooks
+- Audit log
+- Plugins
+- Brain sharing (share knowledge bases across workspaces)
+- Unlimited memory entries
+
+## BYOK (Bring Your Own Key)
+
+All plans include BYOK support. You provide your own API keys for AI providers (Anthropic, OpenAI, etc.) and the platform routes requests through your keys directly. When using BYOK:
+
+- **No AI usage charges from Celune** -- you pay the AI provider directly at their rates.
+- Your keys are encrypted at rest and never logged.
+- Manage keys in **Settings > Connections > Provider Keys**.
+
+BYOK is the recommended setup during beta. It gives you full control over your AI spend and model selection.
+
+## Usage Tracking
+
+Celune tracks five usage metrics against your plan limits:
+
+| Metric         | Unit         | Description                                                |
+| -------------- | ------------ | ---------------------------------------------------------- |
+| LLM tokens     | tokens / USD | AI model usage (tracked as token count and estimated cost) |
+| TTS minutes    | minutes      | Text-to-speech audio generation                            |
+| API calls      | count        | External API requests made through the platform            |
+| Tasks executed | count        | Tasks completed by agents                                  |
+| Storage        | bytes        | Files and data stored in your workspace                    |
+
+### Analytics Dashboard
+
+The **Analytics** section (available on Build and Standard plans) provides:
+
+- **Cost tracking** -- view LLM spend, TTS costs, and trends over time.
+- **Agent performance** -- utilization, health, and error rates per agent.
+- **Task velocity** -- completion rates and time-to-complete metrics.
+- **Usage meters** -- visual progress bars showing current usage against plan limits.
+
+Usage meters are also visible in **Settings > Billing** on all plans.
+
+## Upgrading and Downgrading
+
+To change your plan:
+
+1. Go to **Settings > Billing**.
+2. Review the plan comparison cards showing your current plan and available upgrades.
+3. Click **Upgrade** or **Change Plan** to start a Stripe checkout session.
+4. To downgrade or cancel, use the **Manage Subscription** button which opens the Stripe customer portal.
+
+Plan changes take effect immediately. When upgrading, you get instant access to the new tier's limits and features. When downgrading, your current billing cycle completes before the change applies.
+
+## Access Codes
+
+During beta, Celune offers **access codes** that grant sponsored plan access:
+
+- Access codes are redeemable strings that unlock a specific plan tier for a workspace.
+- Enter your access code during onboarding or in **Settings > Billing**.
+- Codes may be time-limited or permanent depending on the sponsorship.
+- Access codes are managed by the Celune team and distributed through partnerships, events, and early-access programs.
+
+If you have an access code, it overrides the default free tier and grants the associated plan's full limits and features at no cost to you.

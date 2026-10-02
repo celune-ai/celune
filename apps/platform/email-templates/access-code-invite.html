@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Celune Access Code</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+      * {
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          Roboto,
+          sans-serif !important;
+      }
+      code,
+      .code {
+        font-family: 'SF Mono', 'Fira Code', Menlo, Consolas, monospace !important;
+      }
+      /* Default: show light logo (our email bg is dark) */
+      .logo-light {
+        display: block !important;
+      }
+      .logo-dark {
+        display: none !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+      }
+
+      /* Apple Mail / iOS Mail light mode */
+      @media (prefers-color-scheme: light) {
+        .logo-light {
+          display: none !important;
+          max-height: 0 !important;
+          overflow: hidden !important;
+        }
+        .logo-dark {
+          display: block !important;
+          max-height: none !important;
+          overflow: visible !important;
+        }
+      }
+    </style>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #060a07;
+      font-family:
+        -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    "
+  >
+    <!-- Wrapper -->
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      style="background-color: #060a07"
+    >
+      <tr>
+        <td align="center" style="padding: 40px 16px">
+          <!-- Container -->
+          <table
+            role="presentation"
+            width="560"
+            cellpadding="0"
+            cellspacing="0"
+            style="max-width: 560px; width: 100%"
+          >
+            <!-- Logo — white logo on dark pill, visible on any background -->
+            <tr>
+              <td style="padding: 0 0 40px">
+                <div
+                  style="
+                    display: inline-block;
+                    background-color: #060a07;
+                    border-radius: 8px;
+                    padding: 8px 12px;
+                  "
+                >
+                  <img
+                    src="https://celune.ai/celune-light.png"
+                    alt="Celune"
+                    width="110"
+                    style="display: block"
+                  />
+                </div>
+              </td>
+            </tr>
+
+            <!-- Hero -->
+            <tr>
+              <td style="padding: 0 0 8px">
+                <h1
+                  style="
+                    margin: 0;
+                    font-size: 28px;
+                    font-weight: 600;
+                    color: #ffffff;
+                    line-height: 1.3;
+                  "
+                >
+                  You're in.
+                </h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 0 0 32px">
+                <p style="margin: 0; font-size: 16px; line-height: 1.65; color: #a3a3a3">
+                  Your access code for Celune is ready. Use it to create your account and start
+                  building with your AI agent team.
+                </p>
+              </td>
+            </tr>
+
+            <!-- Code Card -->
+            <tr>
+              <td style="padding: 0 0 32px">
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    background: linear-gradient(135deg, #080c09 0%, #0a0f0b 100%);
+                    border: 1px solid #142018;
+                    border-radius: 16px;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 32px; text-align: center">
+                      <!-- Stars decoration -->
+                      <p
+                        style="
+                          margin: 0 0 12px;
+                          font-size: 11px;
+                          font-weight: 600;
+                          color: #525252;
+                          text-transform: uppercase;
+                          letter-spacing: 2px;
+                        "
+                      >
+                        Your Access Code
+                      </p>
+                      <!-- Code -->
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 32px;
+                          font-weight: 700;
+                          color: #22c55e;
+                          font-family:
+                            'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+                          letter-spacing: 4px;
+                        "
+                      >
+                        {{code}}
+                      </p>
+                      <!-- Divider -->
+                      <div
+                        style="margin: 16px auto; width: 60px; height: 1px; background: #142018"
+                      ></div>
+                      <!-- Plan + Expiry -->
+                      <p style="margin: 0; font-size: 13px; color: #6b7280">
+                        <span style="color: #22c55e; font-weight: 500">{{plan}}</span> plan &middot;
+                        {{expires}}
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- CTA Button -->
+            <tr>
+              <td style="padding: 0 0 16px" align="center">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="background: #22c55e; border-radius: 10px">
+                      <a
+                        href="{{signup_url}}"
+                        style="
+                          display: inline-block;
+                          padding: 14px 40px;
+                          font-size: 15px;
+                          font-weight: 600;
+                          color: #000000;
+                          text-decoration: none;
+                          letter-spacing: 0.2px;
+                        "
+                      >
+                        Create Your Account →
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Alt link -->
+            <tr>
+              <td style="padding: 0 0 32px" align="center">
+                <p style="margin: 0; font-size: 13px; color: #525252">
+                  Or visit
+                  <a
+                    href="https://{{app_domain}}/signup"
+                    style="color: #22c55e; text-decoration: none"
+                    >{{app_domain}}/signup</a
+                  >
+                  and enter the code manually
+                </p>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="padding: 0 0 8px">
+                <p style="margin: 0; font-size: 13px; color: #525252">— Eric & the Celune Team</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="padding: 16px 0">
+                      <a
+                        href="https://celune.ai"
+                        style="
+                          font-size: 12px;
+                          color: #404040;
+                          text-decoration: none;
+                          margin-right: 16px;
+                        "
+                        >celune.ai</a
+                      >
+                      <a
+                        href="https://x.com/celuneapp"
+                        style="
+                          font-size: 12px;
+                          color: #404040;
+                          text-decoration: none;
+                          margin-right: 16px;
+                        "
+                        >X / Twitter</a
+                      >
+                      <a
+                        href="https://docs.celune.ai"
+                        style="font-size: 12px; color: #404040; text-decoration: none"
+                        >Docs</a
+                      >
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p style="margin: 0; font-size: 11px; color: #333333; line-height: 1.5">
+                  You're receiving this because you joined the Celune waitlist. If this wasn't you,
+                  you can safely ignore this email.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

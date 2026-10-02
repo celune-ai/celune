@@ -1,0 +1,69 @@
+/*
+ * shadcn/ui host mapping for @celuneai/react.
+ *
+ *   @import '@celuneai/react/components.css';
+ *   @import '@celuneai/react/mappings/shadcn.css';
+ *
+ * Unlayered on purpose: it wins over defaults.css and CeluneProvider `appearance.variables`.
+ * Dark mode comes from the host's `.dark` class; every value below follows it.
+ *
+ * Fonts: the prebuilt @celuneai/react CSS ships no @font-face rules (the build strips them).
+ * The host loads its own fonts; --celune-font reads the host's --font-sans. Weights keep the
+ * package defaults (light 300, regular 400, medium 500, strong 500) unless the host sets
+ * --celune-font-weight-*.
+ */
+:root {
+  --celune-bg: var(--background);
+  --celune-surface: var(--card);
+  --celune-surface-raised: var(--popover);
+  --celune-surface-muted: var(--muted);
+  --celune-surface-hover: var(--accent);
+  --celune-fg: var(--foreground);
+  --celune-fg-muted: var(--muted-foreground);
+  --celune-primary: var(--primary);
+  --celune-primary-fg: var(--primary-foreground);
+  --celune-on-status: var(--primary-foreground);
+  --celune-danger: var(--destructive);
+  --celune-border: var(--border);
+  --celune-border-strong: var(--input);
+  --celune-ring: var(--ring);
+  --celune-radius: var(--radius);
+  --celune-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 8%, transparent);
+  --celune-shadow-raised: 0 4px 16px color-mix(in srgb, var(--foreground) 12%, transparent);
+  --celune-space: var(--spacing, 0.25rem);
+  --celune-font: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  --celune-font-mono: var(--font-mono, ui-monospace, monospace);
+  --celune-duration: 150ms;
+  --celune-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /*
+   * Filled badges put --primary-foreground text on these fills. Stock chart colors fall below
+   * 4.5:1 there (amber --chart-4 is 1.6:1 in light), so each fill mixes 40% --foreground into
+   * the chart color. That darkens fills in light mode and lightens them in dark mode, the
+   * direction that raises contrast in both. Check your own palette with the same rule.
+   */
+  --celune-status-backlog: var(--muted-foreground);
+  --celune-status-inbox: color-mix(in oklab, var(--muted-foreground) 60%, var(--foreground));
+  --celune-status-scoping: color-mix(in oklab, var(--chart-2) 60%, var(--foreground));
+  --celune-status-planning: color-mix(in oklab, var(--chart-3) 60%, var(--foreground));
+  --celune-status-in-progress: color-mix(in oklab, var(--chart-1) 60%, var(--foreground));
+  --celune-status-review: color-mix(in oklab, var(--chart-4) 60%, var(--foreground));
+  --celune-status-done: var(--primary);
+  --celune-status-archived: color-mix(in oklab, var(--muted-foreground) 80%, var(--foreground));
+  --celune-priority-urgent: var(--destructive);
+  --celune-priority-high: color-mix(in oklab, var(--chart-1) 60%, var(--foreground));
+  --celune-priority-normal: color-mix(in oklab, var(--chart-2) 60%, var(--foreground));
+  --celune-priority-low: var(--muted-foreground);
+
+  --celune-agent-1: color-mix(in oklab, var(--chart-1) 60%, var(--foreground));
+  --celune-agent-2: color-mix(in oklab, var(--chart-2) 60%, var(--foreground));
+  --celune-agent-3: color-mix(in oklab, var(--chart-3) 60%, var(--foreground));
+  --celune-agent-4: color-mix(in oklab, var(--chart-4) 60%, var(--foreground));
+  --celune-agent-5: color-mix(in oklab, var(--chart-5) 60%, var(--foreground));
+  --celune-agent-6: color-mix(in oklab, var(--chart-1) 60%, var(--foreground));
+  --celune-agent-7: color-mix(in oklab, var(--chart-2) 60%, var(--foreground));
+  --celune-agent-8: color-mix(in oklab, var(--chart-3) 60%, var(--foreground));
+  --celune-agent-9: color-mix(in oklab, var(--chart-4) 60%, var(--foreground));
+  --celune-agent-10: color-mix(in oklab, var(--chart-5) 60%, var(--foreground));
+  --celune-agent-11: color-mix(in oklab, var(--chart-1) 60%, var(--foreground));
+}

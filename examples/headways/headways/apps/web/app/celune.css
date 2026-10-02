@@ -1,0 +1,8 @@
+/*
+ * Celune module styles for Headways. components.css is the prebuilt module CSS
+ * without Tailwind preflight; the mapping points every --celune-* variable at a
+ * Headways token from @repo/ui/theme.css, so light and dark follow the app theme.
+ * No color literals here, so pnpm audit:tokens stays green.
+ */
+@import '@celuneai/react/components.css';
+@import '@celuneai/react/mappings/headways.css';

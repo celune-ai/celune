@@ -1,0 +1,19 @@
+{
+  "name": "@repo/types",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./task": "./src/task.ts",
+    "./project": "./src/project.ts",
+    "./activity": "./src/activity.ts",
+    "./agent": "./src/agent.ts",
+    "./health": "./src/health.ts"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*"
+  },
+  "typescript": {
+    "config": "./tsconfig.json"
+  }
+}

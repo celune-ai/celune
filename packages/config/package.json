@@ -1,0 +1,22 @@
+{
+  "name": "@repo/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.nextjs.json",
+    "eslint.base.mjs",
+    "vitest.shared.ts"
+  ],
+  "exports": {
+    "./vitest.shared": "./vitest.shared.ts",
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.nextjs.json": "./tsconfig.nextjs.json",
+    "./eslint.base.mjs": "./eslint.base.mjs"
+  },
+  "dependencies": {
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6"
+  }
+}

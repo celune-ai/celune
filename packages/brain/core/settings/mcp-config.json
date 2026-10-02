@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic-ai/mcp-supabase",
+        "--url",
+        "{{SUPABASE_URL}}",
+        "--key",
+        "{{SUPABASE_SERVICE_KEY}}"
+      ]
+    }
+  }
+}

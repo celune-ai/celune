@@ -1,0 +1,33 @@
+/*
+ * @celuneai/react token plumbing. No color literals.
+ *
+ * Precedence, lowest to highest:
+ *   celune-derived     values computed from the base tokens (this file)
+ *   celune-defaults    open defaults (defaults.css, optional)
+ *   celune-appearance  CeluneProvider `appearance.variables`
+ *   unlayered          host mapping (for example `:root { --celune-primary: var(--primary) }`)
+ *
+ * Hosts that compile Tailwind themselves import this file next to their mapping.
+ */
+@layer celune-derived, celune-defaults, celune-appearance;
+
+@layer celune-derived {
+  :root {
+    --celune-surface-hover: color-mix(in srgb, var(--celune-fg) 6%, var(--celune-surface));
+    --celune-on-status: var(--celune-primary-fg);
+
+    --celune-text-3xs: 10px;
+    --celune-text-2xs: 11px;
+    --celune-text-xs: 0.75rem;
+    --celune-text-sm: 0.875rem;
+    --celune-text-base: 1rem;
+    --celune-text-lg: 1.125rem;
+    --celune-text-xl: 1.25rem;
+
+    /* Leicht 300, Buch 400, Kräftig 500. Kräftig was declared at 600 but reads as a medium. */
+    --celune-font-weight-light: 300;
+    --celune-font-weight-regular: 400;
+    --celune-font-weight-medium: 500;
+    --celune-font-weight-strong: 500;
+  }
+}

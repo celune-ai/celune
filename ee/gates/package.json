@@ -1,0 +1,26 @@
+{
+  "name": "@celuneai/ee-gates",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Celune Cloud Gate implementation: suspension and plan limits behind @celuneai/core's Gate interface",
+  "license": "SEE LICENSE IN ../LICENSE",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@celuneai/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "typescript": "^5"
+  },
+  "typescript": {
+    "config": "./tsconfig.json"
+  }
+}

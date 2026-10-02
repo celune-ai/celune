@@ -1,0 +1,15 @@
+{
+  "skill": "closing-time",
+  "score": 76.5,
+  "structure_score": 80.0,
+  "clarity_score": 95.0,
+  "completeness_score": 45.0,
+  "weights": {
+    "structure": 0.4,
+    "clarity": 0.35,
+    "completeness": 0.25
+  },
+  "regression_delta": 76.5,
+  "regression_passed": true,
+  "passed": true
+}

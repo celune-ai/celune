@@ -1,0 +1,13 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/weekly-digest",
+      "schedule": "0 8 * * 0"
+    }
+  ]
+}

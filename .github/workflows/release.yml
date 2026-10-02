@@ -40,18 +40,18 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
       # With pending changesets this opens or updates a "Version Packages" pull request.
       # With none, it publishes every package whose version is not on npm yet.
-      - uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+      - uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          version: pnpm changeset version
-          publish: pnpm release
-          title: 'chore: version packages'
-          commit: 'chore: version packages'
+          version-script: pnpm changeset version
+          publish-script: pnpm release
+          pr-title: 'chore: version packages'
+          commit-message: 'chore: version packages'
+          # v2 reads the token only from this input; the GITHUB_TOKEN env var is ignored.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Trusted publishing is the primary path. npm tries OIDC first and uses this
-          # token only when the OIDC exchange fails. Leave the NPM_TOKEN secret unset
-          # once every package has a trusted publisher (see PUBLISHING.md).
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Trusted publishing is the primary path. setup-node writes an .npmrc that reads
+          # NODE_AUTH_TOKEN, which npm uses only when the OIDC exchange fails. Leave the
+          # NPM_TOKEN secret unset once every package has a trusted publisher (see PUBLISHING.md).
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           # Same as `npm publish --provenance`. Trusted publishing attaches provenance on
           # its own; this keeps it on the token fallback too.

@@ -25,6 +25,6 @@
     "@repo/config": "workspace:*",
     "@types/node": "^20",
     "tsup": "^8.5.1",
-    "typescript": "^5"
+    "typescript": "^7"
   }
 }

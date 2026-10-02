@@ -63,7 +63,7 @@
     "@repo/db": "workspace:*",
     "@repo/types": "workspace:*",
     "tsup": "^8.5.1",
-    "typescript": "^5"
+    "typescript": "^7"
   },
   "typescript": {
     "config": "./tsconfig.json"

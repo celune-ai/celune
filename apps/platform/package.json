@@ -69,6 +69,6 @@
     "pdf-parse": "^2.4.5",
     "stripe": "^22.6.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^7"
   }
 }

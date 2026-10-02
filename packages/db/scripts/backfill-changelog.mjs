@@ -20,7 +20,7 @@ import { resolve } from 'path';
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const repoIdx = args.indexOf('--repo');
-const repo = repoIdx !== -1 ? args[repoIdx + 1] : 'celune-ai/celune-platform';
+const repo = repoIdx !== -1 ? args[repoIdx + 1] : 'celune-ai/celune';
 const wsIdx = args.indexOf('--workspace-id');
 
 // ── Load env ────────────────────────────────────────────────────────────────

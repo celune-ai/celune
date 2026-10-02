@@ -217,7 +217,7 @@ DATABASE_URL=postgresql://... node packages/db/scripts/migrate-production.mjs --
 DATABASE_URL=postgresql://... node packages/db/scripts/migrate-production.mjs --apply
 ```
 
-Celune Cloud runs this runner through an approval-gated workflow; see [Production migrations](../../PUBLISHING.md#9-production-migrations-celune-cloud).
+Celune Cloud runs this runner through an approval-gated workflow; see [Production migrations](../../PUBLISHING.md#production-migrations).
 
 Apply migrations before you deploy code that depends on them. See [How the schema is applied](../../SETUP.md#how-the-schema-is-applied) for how a fresh database boots.
 

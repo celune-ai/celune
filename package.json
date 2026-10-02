@@ -1,5 +1,5 @@
 {
-  "name": "celune-platform",
+  "name": "celune",
   "private": true,
   "scripts": {
     "dev": "turbo dev --filter=platform...",

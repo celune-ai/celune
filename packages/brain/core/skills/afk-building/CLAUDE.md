@@ -10,7 +10,7 @@ requires:
 
 Platform engineering build mode. RICK picks product tasks from Planned column, writes RFCs, delegates to sub-agents, produces completion reports.
 
-**Scope:** celune-platform product work only. Web apps, APIs, UI, DB, infra, security.
+**Scope:** celune product work only. Web apps, APIs, UI, DB, infra, security.
 **Out of scope:** Agent system improvements → `/afk-learning`. Quick fixes → `/afk-housekeeping`.
 
 ---

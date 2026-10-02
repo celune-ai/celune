@@ -1,5 +1,5 @@
 ###############################################################################
-# Multi-stage Dockerfile for celune-platform Turborepo monorepo
+# Multi-stage Dockerfile for the Celune Turborepo monorepo
 # Builds the "platform" app (app.celune.ai)
 ###############################################################################
 

@@ -27,7 +27,7 @@ Parse for: **target skill** (`/afk-*` or `/deep-build`) and **custom instruction
 
 ## 1. Assess the session type
 
-Determine: **Coding** (celune-platform changes), **Vault/infra** (vault changes), or **Mixed**. This determines which steps to run.
+Determine: **Coding** (celune changes), **Vault/infra** (vault changes), or **Mixed**. This determines which steps to run.
 
 ## 2. Code audit (coding sessions only)
 
@@ -108,7 +108,7 @@ Run if 3+ vault `.md` files were created/modified: `python3 $VAULT_ROOT/scripts/
 
 ## 9b. Auto-backup repos
 
-**Read `refs/full-reference.md` for backup commands.** Back up the vault (commit + push main) and celune-platform (commit + push feature branch only, never main).
+**Read `refs/full-reference.md` for backup commands.** Back up the vault (commit + push main) and celune (commit + push feature branch only, never main).
 
 ## 9c. Email session summary (opt-in)
 

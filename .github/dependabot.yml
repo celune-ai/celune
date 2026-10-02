@@ -12,6 +12,14 @@ updates:
     groups:
       minor-and-patch:
         update-types: ['minor', 'patch']
+    ignore:
+      # Types must match the lowest supported runtime (published packages declare node >=20).
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # TypeScript 7 (native port) is unsupported by typescript-eslint (<6.1) and drops the
+      # JS compiler API that d.ts builds rely on. Remove once the toolchain supports it.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
     labels:
       - 'dependencies'
     commit-message:

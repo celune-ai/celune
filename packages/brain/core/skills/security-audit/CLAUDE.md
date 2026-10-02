@@ -8,7 +8,7 @@ requires:
 
 # security-audit
 
-Full security audit of the celune-platform monorepo. Runs automated scans, then manual code review, produces a findings report.
+Full security audit of the celune monorepo. Runs automated scans, then manual code review, produces a findings report.
 
 **Repo:** `$CELUNE_REPO/`
 **Stack:** Next.js 16, React 19, Supabase, pnpm monorepo (Turborepo)

@@ -1,6 +1,6 @@
 # performance-audit
 
-Full performance audit of the celune-platform monorepo. Runs automated scans, parallel manual review, produces findings report, auto-fixes safe issues, and creates a PR.
+Full performance audit of the celune monorepo. Runs automated scans, parallel manual review, produces findings report, auto-fixes safe issues, and creates a PR.
 
 **Repo:** `$CELUNE_REPO/`
 **Stack:** Next.js 16, React 19, Supabase, pnpm monorepo (Turborepo)

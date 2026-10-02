@@ -124,7 +124,7 @@ describe('review_requested webhook for rickstrips', () => {
       action: 'review_requested',
       pull_request: {
         number: 20,
-        html_url: 'https://github.com/celune-ai/celune-platform/pull/20',
+        html_url: 'https://github.com/celune-ai/celune/pull/20',
         head: { ref: 'celune/rick/security-hardening', sha: 'abc123' },
         base: { ref: 'main' },
         title: 'Feat: Tenant isolation',
@@ -135,7 +135,7 @@ describe('review_requested webhook for rickstrips', () => {
         id: 12345,
       },
       repository: {
-        full_name: 'celune-ai/celune-platform',
+        full_name: 'celune-ai/celune',
       },
     };
 
@@ -181,7 +181,7 @@ describe('review_requested webhook for rickstrips', () => {
       action: 'review_requested',
       pull_request: {
         number: 20,
-        html_url: 'https://github.com/celune-ai/celune-platform/pull/20',
+        html_url: 'https://github.com/celune-ai/celune/pull/20',
         head: { ref: 'main', sha: 'abc123' },
         base: { ref: 'main' },
         title: 'Some PR',
@@ -192,7 +192,7 @@ describe('review_requested webhook for rickstrips', () => {
         id: 999,
       },
       repository: {
-        full_name: 'celune-ai/celune-platform',
+        full_name: 'celune-ai/celune',
       },
     };
 

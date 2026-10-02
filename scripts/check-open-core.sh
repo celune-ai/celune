@@ -78,8 +78,6 @@ if [ -n "$ee_hits" ]; then
 fi
 
 REPO_SKIP=(-name node_modules -o -name .next -o -name .git -o -name .turbo -o -name dist -o -name coverage -o -name storybook-static)
-# Paths in scripts/public-tree-exclude.txt never reach the public tree
-REPO_SKIP+=(-o -path ./apps/admin -o -path ./.claude -o -path ./memory -o -path ./.scratch -o -path ./project-plans -o -path ./docs/research -o -path ./docs/security-policies)
 
 font_hits=$(find -L . \( "${REPO_SKIP[@]}" -o -path ./ee \) -prune -o -type f \
   \( -iname '*.woff' -o -iname '*.woff2' -o -iname '*.otf' -o -iname '*.ttf' \) -print 2>/dev/null)

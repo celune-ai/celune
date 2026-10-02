@@ -74,7 +74,7 @@ if [ -d "$VAULT_ROOT/.git" ]; then
 fi
 ```
 
-**celune-platform (if uncommitted changes):**
+**celune (if uncommitted changes):**
 
 ```bash
 cd $CELUNE_REPO
@@ -84,7 +84,7 @@ git diff --cached --quiet || git commit -m "auto-backup: session $(date +%Y-%m-%
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 BRANCH=$(git branch --show-current)
 if [ "$BRANCH" != "main" ]; then
-  git push origin "$BRANCH" 2>/dev/null || echo "celune-platform push failed"
+  git push origin "$BRANCH" 2>/dev/null || echo "celune push failed"
 fi
 ```
 

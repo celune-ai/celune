@@ -29,7 +29,7 @@ Parse for: **target skill** (`/afk-*` or `/deep-build`) and **custom instruction
 
 ## 1. Assess the session type
 
-Determine: **Coding** (celune-platform changes), **Vault/infra** (vault changes), **Q&A** (no file changes), or **Mixed**. This controls which steps to run:
+Determine: **Coding** (celune changes), **Vault/infra** (vault changes), **Q&A** (no file changes), or **Mixed**. This controls which steps to run:
 
 | Step                   | Coding | Vault | Q&A          | Mixed |
 | ---------------------- | ------ | ----- | ------------ | ----- |
@@ -45,7 +45,7 @@ Determine: **Coding** (celune-platform changes), **Vault/infra** (vault changes)
 | 9b. Backup             | Run    | Run   | Skip         | Run   |
 | 10. Cost summary       | Run    | Run   | Run          | Run   |
 
-Also check for **uncommitted changes** in the vault and celune-platform. If found, note them in the session log.
+Also check for **uncommitted changes** in the vault and celune. If found, note them in the session log.
 
 ## 2. Code audit (coding sessions only)
 
@@ -184,7 +184,7 @@ python3 "$VAULT_ROOT/scripts/init-memory-db.py" --quiet 2>/dev/null || echo "WAR
 
 **Prerequisite: Step 8 (redact secrets) must have completed successfully.** If step 8 was skipped or failed, do NOT push.
 
-**Read `refs/full-reference.md` for backup commands.** Back up the vault (commit + push main) and celune-platform (commit + push feature branch only, never main).
+**Read `refs/full-reference.md` for backup commands.** Back up the vault (commit + push main) and celune (commit + push feature branch only, never main).
 
 ## 9c. Email session summary (opt-in)
 

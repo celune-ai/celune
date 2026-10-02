@@ -176,7 +176,7 @@ If this template will be sent from celune-web:
 2. Use the inline HTML approach (not Resend template ID) unless explicitly asked to use dashboard templates
 3. Match the HTML from the template file
 
-If sent from celune-platform admin:
+If sent from celune admin:
 
 1. Add to the relevant API route in `apps/platform/src/app/api/`
 2. Support both Resend template ID and inline HTML fallback

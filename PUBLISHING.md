@@ -175,5 +175,23 @@ Move the admin app's deployment (Vercel project or Railway service) to the new r
 
 - Confirm `hello@celune.ai` receives mail. It is the only inbox the public files name (security, conduct, CLA, and sales mail all go there, tagged in the subject); no other mailboxes are needed.
 - Replace "Celune" as the copyright holder in `LICENSE` headers, `NOTICE`, `ee/LICENSE`, and `CLA.md` if the legal entity has a different name. Have counsel review `ee/LICENSE` and `CLA.md`.
-- Celune Cloud still deploys from the private `celune-platform` repository. Its database migrations ran from the old `ci.yml`, which this branch replaces. Keep a private deploy pipeline that runs `pnpm migrate` against the hosted database.
-- The hosted database recorded the original hashes of `002-security-fixes.sql`, `003-agent-configs.sql`, and `004-agent-permissions.sql`. Only comments changed in those files, so `pnpm migrate` prints hash-mismatch warnings for them and applies nothing.
+- Celune Cloud database migrations run from this repository through the approval-gated workflow in section 9.
+- The hosted database recorded the original hashes of `002-security-fixes.sql`, `003-agent-configs.sql`, and `004-agent-permissions.sql`. Only comments changed in those files, so `pnpm migrate` and the production runner print hash-mismatch warnings for them and apply nothing.
+
+## 9. Production migrations (Celune Cloud)
+
+Celune Cloud migrations run from `.github/workflows/migrate-production.yml`. It starts only by hand (**Actions**, then **Migrate production**, then **Run workflow** on `main`), runs in the `production` environment, and waits for an approving reviewer before it can read the database secret. Pull requests and forks cannot start it.
+
+One-time setup, in **Settings**, then **Environments**, then **production**:
+
+1. Deployment branches: `main` only.
+2. Required reviewers: the account that approves production changes.
+3. Environment secret `DATABASE_URL`: the Supabase **Session pooler** connection string (Project Settings, then Database, then Connection string, then Session pooler; port 5432). GitHub runners have no IPv6, which the direct `db.<ref>.supabase.co` host needs, and the transaction pooler on port 6543 does not keep the session state DDL needs. Store it on the environment only, never as a repository secret.
+
+For each release with new files in `packages/db/schema/migrations/`:
+
+1. Merge the migration pull request.
+2. Run **Migrate production** with mode `plan`, approve it, and read the list of pending files and any hash-mismatch warnings. Nothing changes in plan mode.
+3. Run it again with mode `apply` and approve it.
+
+`packages/db/scripts/migrate-production.mjs` is stricter than `pnpm migrate`: any SQL error stops the run, each file and its `public._migrations` row commit in one transaction (a failed file is rolled back and later files are not attempted), and `ALTER TYPE ... ADD VALUE IF NOT EXISTS` statements commit first on their own because Postgres cannot use a new enum value in the transaction that added it. Enum additions must use `IF NOT EXISTS`. The runner never creates helper functions and refuses to run against a database without `public._migrations`.

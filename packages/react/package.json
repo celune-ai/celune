@@ -105,7 +105,7 @@
     "@tanstack/react-virtual": "^3.13.21",
     "class-variance-authority": "^0.7.1",
     "framer-motion": "^12.38.0",
-    "lucide-react": "^0.575.0",
+    "lucide-react": "^1.48.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
     "sonner": "^2.0.8"

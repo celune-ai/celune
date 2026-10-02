@@ -29,11 +29,14 @@ else
   trap 'rm -rf "$DIR"' EXIT
   ROOT=$(git rev-parse --show-toplevel)
   EXCLUDES=()
-  while IFS= read -r line; do
-    [[ -z "$line" || "$line" == \#* ]] && continue
-    EXCLUDES+=(":(exclude,top)$line")
-  done < "$ROOT/scripts/public-tree-exclude.txt"
-  git -C "$ROOT" archive HEAD -- . "${EXCLUDES[@]}" | tar -x -C "$DIR"
+  # The public repository ships without the exclude list; its HEAD is already the public tree.
+  if [ -f "$ROOT/scripts/public-tree-exclude.txt" ]; then
+    while IFS= read -r line; do
+      [[ -z "$line" || "$line" == \#* ]] && continue
+      EXCLUDES+=(":(exclude,top)$line")
+    done < "$ROOT/scripts/public-tree-exclude.txt"
+  fi
+  git -C "$ROOT" archive HEAD -- . ${EXCLUDES[@]+"${EXCLUDES[@]}"} | tar -x -C "$DIR"
 fi
 
 HITS=$(cd "$DIR" && grep -rnIE "$PATTERNS" . --exclude-dir=node_modules --exclude=pnpm-lock.yaml \

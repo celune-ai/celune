@@ -180,7 +180,7 @@ Move the admin app's deployment (Vercel project or Railway service) to the new r
 
 ## 9. Production migrations (Celune Cloud)
 
-Celune Cloud migrations run from `.github/workflows/migrate-production.yml`. It starts only by hand (**Actions**, then **Migrate production**, then **Run workflow** on `main`), runs in the `production` environment, and waits for an approving reviewer before it can read the database secret. Pull requests and forks cannot start it.
+Celune Cloud migrations run from `.github/workflows/migrate-production.yml`. For how migrations are written, ordered, and tracked, see [Upgrades, Migrations, and Rollback](apps/platform/DEPLOYMENT.md#8-upgrades-migrations-and-rollback); this section covers only the Cloud workflow. It starts only by hand (**Actions**, then **Migrate production**, then **Run workflow** on `main`), runs in the `production` environment, and waits for an approving reviewer before it can read the database secret. Pull requests and forks cannot start it.
 
 One-time setup, in **Settings**, then **Environments**, then **production**:
 

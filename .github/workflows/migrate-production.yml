@@ -1,0 +1,44 @@
+# Applies database migrations to Celune Cloud. Manual only: run it with mode "plan" to list
+# pending files, then "apply". The production environment holds DATABASE_URL and requires an
+# approving reviewer, so nothing reaches the hosted database without sign-off.
+name: Migrate production
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'plan lists pending migrations; apply runs them'
+        type: choice
+        options: [plan, apply]
+        default: plan
+
+permissions:
+  contents: read
+
+concurrency:
+  group: migrate-production
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Migrate production (${{ inputs.mode }})
+    if: github.repository == 'celune-ai/celune' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+      - name: Install the Postgres client
+        run: command -v psql >/dev/null || (sudo apt-get update -q && sudo apt-get install -y -q postgresql-client)
+      - name: Run the migration runner
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          case "$MODE" in plan|apply) ;; *) echo "unknown mode"; exit 1 ;; esac
+          node packages/db/scripts/migrate-production.mjs "--$MODE"

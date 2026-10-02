@@ -210,6 +210,15 @@ pnpm migrate --dry-run     # pending files, nothing applied
 pnpm migrate               # apply pending files, with a prompt
 ```
 
+`pnpm migrate` runs SQL through the `exec_sql` RPC with the service role key. To migrate over a direct Postgres connection instead, with no tolerated errors and one transaction per file, use the strict runner (it needs `psql`):
+
+```bash
+DATABASE_URL=postgresql://... node packages/db/scripts/migrate-production.mjs --plan   # pending files, nothing applied
+DATABASE_URL=postgresql://... node packages/db/scripts/migrate-production.mjs --apply
+```
+
+Celune Cloud runs this runner through an approval-gated workflow; see [Production migrations](../../PUBLISHING.md#9-production-migrations-celune-cloud).
+
 Apply migrations before you deploy code that depends on them. See [How the schema is applied](../../SETUP.md#how-the-schema-is-applied) for how a fresh database boots.
 
 ### Health check

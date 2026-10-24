@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Github, Loader2, Search, X } from 'lucide-react';
+import { ArrowLeft, Loader2, Search, X } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import {
   Dialog,
   DialogContent,

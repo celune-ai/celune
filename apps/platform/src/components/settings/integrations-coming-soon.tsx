@@ -2,7 +2,6 @@
 
 import {
   AlertTriangle,
-  Github,
   MessageSquare,
   Brain,
   Plug,
@@ -13,6 +12,7 @@ import {
   BarChart3,
   type LucideIcon,
 } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { Badge } from '@repo/ui/components/badge';
 
 interface PreviewIntegration {

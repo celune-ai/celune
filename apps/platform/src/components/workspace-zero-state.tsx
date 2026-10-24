@@ -1,6 +1,7 @@
 'use client';
 
-import { Github, GitBranch, ArrowRight, Users } from 'lucide-react';
+import { GitBranch, ArrowRight, Users } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { Button } from '@repo/ui/components/button';
 import { apiUrl } from '@repo/db/api';
 import { useWorkspace } from '@/providers/workspace-provider';

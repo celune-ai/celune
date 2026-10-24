@@ -4,13 +4,13 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Loader2,
   Trash2,
-  Github,
   ExternalLink,
   FolderOpen,
   Plus,
   AlertTriangle,
   ChevronDown,
 } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { toast } from 'sonner';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';

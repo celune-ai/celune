@@ -10,13 +10,13 @@ import {
   Copy,
   ExternalLink,
   FolderOpen,
-  Github,
   LayoutDashboard,
   Loader2,
   Mail,
   MessageSquare,
   Terminal,
 } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
 import { Textarea } from '@repo/ui/components/textarea';

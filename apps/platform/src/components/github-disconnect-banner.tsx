@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Github, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { useWorkspaceHref } from '@/hooks/use-workspace-href';
 import { useWorkspace } from '@/providers/workspace-provider';
 import { apiUrl } from '@repo/db/api';

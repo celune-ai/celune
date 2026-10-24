@@ -10,10 +10,10 @@ import {
   Bot,
   FolderKanban,
   KanbanSquare,
-  Github,
   Building2,
   Key,
 } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { apiUrl } from '@repo/db/api';
 import { fetchJson } from '@/lib/fetch-json';
 import { useWorkspace } from '@/providers/workspace-provider';

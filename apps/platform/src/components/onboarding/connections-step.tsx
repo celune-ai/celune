@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import {
-  Github,
   Terminal,
   Check,
   CheckCircle2,
@@ -16,6 +15,7 @@ import {
   Loader2,
   Key,
 } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { Button } from '@repo/ui/components/button';
 import {
   DropdownMenu,

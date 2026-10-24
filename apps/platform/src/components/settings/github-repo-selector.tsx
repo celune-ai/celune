@@ -1,16 +1,8 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import {
-  Loader2,
-  Github,
-  Search,
-  Lock,
-  Globe,
-  CheckCircle2,
-  AlertCircle,
-  LinkIcon,
-} from 'lucide-react';
+import { Loader2, Search, Lock, Globe, CheckCircle2, AlertCircle, LinkIcon } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
 import {

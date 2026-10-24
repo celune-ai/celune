@@ -2,17 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
-import {
-  Github,
-  Plus,
-  Trash2,
-  AlertTriangle,
-  Building2,
-  User,
-  Copy,
-  Check,
-  Settings2,
-} from 'lucide-react';
+import { Plus, Trash2, AlertTriangle, Building2, User, Copy, Check, Settings2 } from 'lucide-react';
+import { Github } from '@/components/icons/github';
 import { toast } from 'sonner';
 import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';

@@ -38,11 +38,7 @@ export function AuthLayout({
         </div>
         <div className="mt-6 flex items-center gap-2 text-white/80">
           <Shield className="h-3.5 w-3.5" />
-          <span className="text-xs">SOC 2 Type II compliant</span>
-          <span className="text-white/40">|</span>
           <span className="text-xs">AES-256 encryption</span>
-          <span className="text-white/40">|</span>
-          <span className="text-xs">GDPR ready</span>
         </div>
       </div>
 

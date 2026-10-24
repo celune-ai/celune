@@ -1,6 +1,6 @@
 {
   "name": "@celuneai/cli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Celune CLI: set up a self-hosted Celune and connect AI coding tools to it",
   "license": "Apache-2.0",
   "type": "module",

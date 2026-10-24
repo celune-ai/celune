@@ -17,6 +17,6 @@
   },
   "dependencies": {
     "eslint": "^9",
-    "eslint-config-next": "16.3.7"
+    "eslint-config-next": "16.4.3"
   }
 }

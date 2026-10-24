@@ -1,6 +1,6 @@
 {
   "name": "@celuneai/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Celune domain services: tasks, projects, jobs, agents, with Store and Gate interfaces",
   "license": "Apache-2.0",
   "type": "module",

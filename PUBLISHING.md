@@ -22,10 +22,14 @@ All four packages are configured on npmjs.com (package **Settings**, **Trusted P
 | Repository           | `celune`                                                     |
 | Workflow filename    | `release.yml` (the file name only, with the extension)       |
 | Environment name     | leave empty; `release.yml` does not use a GitHub environment |
+| Allow `npm publish`  | checked                                                      |
+| Allow `npm dist-tag` | unchecked                                                    |
+
+A new connection allows only `npm stage publish` until **Allow `npm publish`** is checked. `pnpm release` publishes directly, so without that box the OIDC exchange fails and npm reports `ENEEDAUTH`.
 
 **Publishing access** on each package is set to **Require two-factor authentication and disallow tokens**. Trusted publishing keeps working because it does not use a token.
 
-A connection cannot be edited; to change a field, delete it and add a new one. If a publish fails with `ENEEDAUTH`, compare the workflow filename on npmjs.com with the file in `.github/workflows/`.
+A connection cannot be edited; to change a field, delete it and add a new one. If a publish fails with `ENEEDAUTH`, check that the connection allows `npm publish`, then compare the workflow filename on npmjs.com with the file in `.github/workflows/`.
 
 `release.yml` meets npm's requirements: a GitHub-hosted runner, `id-token: write`, npm 11.5.1 or later (Node 24; a workflow step fails the run on an older npm), and a `repository` field in each package's `package.json` that matches `celune-ai/celune`.
 

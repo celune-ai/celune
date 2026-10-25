@@ -159,6 +159,8 @@ const PUBLIC_API_PREFIXES = [
   '/api/slack/commands',
   '/api/slack/events',
   '/api/slack/interactions',
+  // /celune slash command — the handler verifies Slack's signature
+  '/api/slack/celune',
   // Scheduled digest — the handler requires CRON_SECRET
   '/api/slack/digest',
   '/api/discord/interactions',

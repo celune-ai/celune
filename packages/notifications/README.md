@@ -19,7 +19,6 @@ Multi-channel notification dispatch system for the Celune platform. Sends notifi
 | `src/senders/slack.ts`              | Send Slack messages via webhook/API        |
 | `src/senders/email.ts`              | Send emails via AgentMail                  |
 | `src/branding.ts`                   | Brand colors, logos, and styling constants |
-| `src/templates/weekly-digest.ts`    | Weekly activity digest template            |
 | `src/templates/invitation.ts`       | Workspace invitation template              |
 | `src/templates/review-requested.ts` | PR review request template                 |
 | `src/templates/agent-status.ts`     | Agent status change template               |

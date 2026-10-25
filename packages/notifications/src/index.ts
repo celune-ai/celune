@@ -19,7 +19,6 @@
 export { dispatchNotification } from './dispatch';
 export { sendSlackNotification } from './senders/slack';
 export { sendEmailNotification } from './senders/email';
-export { renderWeeklyDigest } from './templates/weekly-digest';
 export { renderTaskCompleted } from './templates/task-completed';
 export { renderTaskBlocked } from './templates/task-blocked';
 export { renderReviewRequested } from './templates/review-requested';

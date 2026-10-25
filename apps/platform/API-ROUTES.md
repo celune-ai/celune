@@ -185,12 +185,11 @@ Complete reference for all API routes in the Celune platform app (`apps/platform
 
 ## Cron
 
-| Method | Path                      | Auth          | Description        |
-| ------ | ------------------------- | ------------- | ------------------ |
-| GET    | `/api/cron/jobs`          | Authenticated | List cron jobs     |
-| PATCH  | `/api/cron/jobs`          | Authenticated | Update cron job    |
-| POST   | `/api/cron/run`           | CRON_SECRET   | Execute cron job   |
-| POST   | `/api/cron/weekly-digest` | CRON_SECRET   | Send weekly digest |
+| Method | Path             | Auth          | Description      |
+| ------ | ---------------- | ------------- | ---------------- |
+| GET    | `/api/cron/jobs` | Authenticated | List cron jobs   |
+| PATCH  | `/api/cron/jobs` | Authenticated | Update cron job  |
+| POST   | `/api/cron/run`  | CRON_SECRET   | Execute cron job |
 
 ## Discord
 

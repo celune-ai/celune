@@ -34,7 +34,7 @@ function isAuthorized(request: NextRequest): boolean {
 
   const providedToken = authHeader.slice(7); // Remove 'Bearer '
 
-  // Check CRON_SECRET header (Vercel Cron)
+  // Check CRON_SECRET header (scheduled trigger)
   const cronSecret = process.env['CRON_SECRET'];
   if (cronSecret && timingSafeCompare(providedToken, cronSecret)) return true;
 

@@ -317,7 +317,6 @@ All endpoints require authentication (session cookie or API key) unless marked *
 | DELETE | `/api/access-codes/:code`      | Yes           | Delete an access code        |
 | POST   | `/api/access-codes/redeem`     | Yes           | Redeem an access code        |
 | POST   | `/api/cron/run`                | Yes           | Trigger scheduled jobs       |
-| POST   | `/api/cron/weekly-digest`      | Yes           | Trigger weekly digest        |
 | GET    | `/api/integrations/status`     | Yes           | Get all integration statuses |
 | GET    | `/api/waitlist`                | Yes           | Get waitlist entries         |
 | GET    | `/api/portfolio/passwords`     | Yes           | List saved passwords         |

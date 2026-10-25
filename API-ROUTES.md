@@ -154,11 +154,10 @@
 
 ## Cron (3 routes)
 
-| Endpoint                  | Methods | Description                     |
-| ------------------------- | ------- | ------------------------------- |
-| `/api/cron/jobs`          | GET     | List scheduled cron jobs        |
-| `/api/cron/run`           | POST    | Trigger a cron job run          |
-| `/api/cron/weekly-digest` | POST    | Generate and send weekly digest |
+| Endpoint         | Methods | Description              |
+| ---------------- | ------- | ------------------------ |
+| `/api/cron/jobs` | GET     | List scheduled cron jobs |
+| `/api/cron/run`  | POST    | Trigger a cron job run   |
 
 ## Discord (6 routes)
 

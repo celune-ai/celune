@@ -104,14 +104,14 @@ Connected workspaces can configure:
 - **Weekly digest** — weekly velocity, project progress, and highlights (triggered by cron)
 - **Real-time notifications** — task assignments, status changes, mentions
 
-Digests are triggered via:
+Digests are Slack-only. Any scheduler (a Railway cron service, GitHub Actions, system cron) triggers them:
 
 ```bash
-# Daily digest (e.g., Vercel Cron at 9am UTC)
+# Daily digest (e.g., every day at 9am UTC)
 curl -X POST "https://<your-app-domain>/api/slack/digest?type=daily" \
   -H "Authorization: Bearer $CRON_SECRET"
 
-# Weekly digest (e.g., Vercel Cron on Monday 9am UTC)
+# Weekly digest (e.g., Mondays at 9am UTC)
 curl -X POST "https://<your-app-domain>/api/slack/digest?type=weekly" \
   -H "Authorization: Bearer $CRON_SECRET"
 ```

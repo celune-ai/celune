@@ -69,7 +69,6 @@ const CSRF_EXEMPT_ROUTES = new Set([
   'webhooks/sentry/heartbeat',
   // Cron routes — use CRON_SECRET auth
   'cron/run',
-  'cron/weekly-digest',
   'cron/activity-digest',
   'health/check-and-alert',
   'webhooks/retry',
@@ -122,7 +121,6 @@ const RATE_LIMIT_EXEMPT_ROUTES = new Set([
   'webhooks/sentry',
   'webhooks/sentry/heartbeat',
   'cron/run',
-  'cron/weekly-digest',
   'cron/activity-digest',
   'health/check-and-alert',
   'webhooks/retry',
@@ -145,7 +143,6 @@ const AUTH_EXEMPT_ROUTES = new Set([
   'slack/celune',
   'slack/events',
   'cron/run',
-  'cron/weekly-digest',
   'cron/activity-digest',
   'webhooks/retry',
   'hooks/notify',

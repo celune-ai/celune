@@ -159,6 +159,8 @@ const PUBLIC_API_PREFIXES = [
   '/api/slack/commands',
   '/api/slack/events',
   '/api/slack/interactions',
+  // Scheduled digest — the handler requires CRON_SECRET
+  '/api/slack/digest',
   '/api/discord/interactions',
   '/api/hooks/notify',
   '/api/support/contact',

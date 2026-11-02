@@ -130,7 +130,7 @@
     "tailwindcss": "4.3.3",
     "tsup": "^8.5.1",
     "typescript": "^5",
-    "vite": "^7.3.1"
+    "vite": "^8.3.5"
   },
   "typescript": {
     "config": "./tsconfig.json"
